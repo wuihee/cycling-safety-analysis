@@ -30,12 +30,12 @@ The goal of this project is to collect data on the passing distance of cars to b
 - Using the software provided, I tested the distance measuring capabilities of the sensor at intervals of 0.5 meters, from 0.5 meters to 5.0 meters.
 - I quickly realized that the sensor would lose a lot of it's accuracy in bright daylight.
 - The default software allowed me to export the data in an excel file format, which I proceeded to extract the data from and graph using Matplotlib.
-- The data analysis can be found in my Jupyter Notebook.
+- The data analysis can be found in my [Jupyter Notebook](./data_analysis/TOF_analysis.ipynb).
 
 ### Raspberry Pi Setup
 
 - To run the sensor on a Raspberry Pi, I downloaded the [demo code](https://www.waveshare.com/wiki/TOF_Laser_Range_Sensor#Resources) provided by the documentation, and enabled to necessary [serial port settings](https://www.waveshare.com/wiki/TOF_Laser_Range_Sensor#Working_with_Raspberry_Pi).
-- Unfortunately, the code didn't work, and with a lack of Python API documentation, I was left to trial and error until I found a solution:
+- Unfortunately, the code didn't work, and with a lack of Python API documentation, I was stuck. After a few days of trial error I found the solution which lay in this line of code:
 
     ```python
     ser = serial.Serial("/dev/ttyS0", 921600)
@@ -45,6 +45,8 @@ The goal of this project is to collect data on the passing distance of cars to b
 - I cleaned up the code and modularized it into a [`Sensor()`](./tof_sensor/sensor.py) class.
 - Next, I wanted a way to see the data on the fly as it was being collected, and not have to wait for collection to finish before extracting the data from the Raspberry Pi.
 - I registered my Raspberry Pi for AWS IoT core, and allowed it to publish data via MQTT. I could then subscribe to the MQTT topic on my laptop, and see the data as it was being collected in real time. For this, I created a [`Publisher()`](./tof_sensor/publish.py) class and a [`subscribe`](./tof_sensor/subscribe.py) script.
+- Finally, I needed the script to autostart on boot. I wrote a [`main.py`](./tof_sensor/main.py) script which continuously collected and published data. I used a [systemd service](./tof_sensor/raspberry_pi_autostart/tof_sensor.service) to autostart my script on the Raspberry Pi.
+- At first, the autostart didn't seem to work no matter what I tried. I finally found that the solution was to have my script sleep for at least 20 seconds before attempt to establish a connection with MQTT. This was because the Raspberry Pi took a while to connect to the internet.
 
 ### Casing Design
 
@@ -52,6 +54,5 @@ The goal of this project is to collect data on the passing distance of cars to b
 - I decided to use [Decathlon's Universal Smartphone Bike Mount](https://www.decathlon.sg/p/universal-adhesive-garmin-adapter-for-smartphones-triban-8500817.html) to attach the sensor.
 - In SolidWorks, I designed a simple frame which I could screw the sensor on. The flat surface of the frame was where I stuck on the bike mount.
 - After some outdoors testing, I realized that the sensor was extremely unreliable when exposed to sunlight. I proceeded to go through another design, before settling on one which not only provided enough shade to mitigate the collection of misserant data, but was also compact enough to prevent interference with pedaling the bike.
-
 
 ### Outdoors Testing
