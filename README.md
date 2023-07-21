@@ -29,7 +29,7 @@ The goal of this project is to collect data on the passing distance of cars to b
 - Using the software provided, I tested the distance measuring capabilities of the sensor at intervals of 0.5 meters, from 0.5 meters to 5.0 meters.
 - I quickly realized that the sensor would lose a lot of it's accuracy in bright daylight.
 - The default software allowed me to export the data in an excel file format, which I proceeded to extract the data from and graph using Matplotlib.
-- The data analysis can be found in my [Jupyter Notebook](./data_analysis/TOF_analysis.ipynb).
+- The data analysis can be found in my [Jupyter Notebook](./data_analysis/TOF_Sensor_Data_Analysis.ipynb).
 
 ### Raspberry Pi Setup
 
