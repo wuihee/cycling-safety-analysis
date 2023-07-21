@@ -16,7 +16,6 @@ The goal of this project is to collect data on the passing distance of cars to b
 2. Basic Tests
 3. Raspberry Pi Setup
 4. Casing Design
-5. Outdoors Testing
 
 ### Setup
 
@@ -34,6 +33,8 @@ The goal of this project is to collect data on the passing distance of cars to b
 
 ### Raspberry Pi Setup
 
+#### TOF Sensor Python API
+
 - To run the sensor on a Raspberry Pi, I downloaded the [demo code](https://www.waveshare.com/wiki/TOF_Laser_Range_Sensor#Resources) provided by the documentation, and enabled to necessary [serial port settings](https://www.waveshare.com/wiki/TOF_Laser_Range_Sensor#Working_with_Raspberry_Pi).
 - Unfortunately, the code didn't work, and with a lack of Python API documentation, I was stuck. After a few days of trial error I found the solution which lay in this line of code:
 
@@ -42,9 +43,39 @@ The goal of this project is to collect data on the passing distance of cars to b
     ```
 
 - This line of code was needed to enable UART communication between the sensor and Raspberry Pi.
-- I cleaned up the code and modularized it into a [`Sensor()`](./tof_sensor/sensor.py) class.
+- Essentially, I needed to read the data from the sensor using [pyserial](https://github.com/pyserial/pyserial/). For example:
+
+    ```python
+    import serial
+
+    ser = serial.Serial("/dev/ttyS0", 921600)
+    protocol = []
+
+    for _ in range(16):
+        protocol.append(ord(ser.read(1)))
+    ```
+
+- Once done, the data would be organized in the form of a [*protocol*](https://www.waveshare.com/wiki/TOF_Laser_Range_Sensor#Protocol_analysis) consisting of 16 bytes which I needed to read the distance and other relevant measurements from:
+
+    > Frame Header (3 bytes) + ID (1 Byte) + System Time (4 Bytes) + Distance (3 Bytes) + Signal Strength (2 Bytes) + Reserved? (1 Byte) + Sum Check (1 Byte)
+
+- For example, to extract distance:
+
+    ```python
+    # Distance information is found in indices 8 to 10 of the protocol.
+    distance = protocol[8] | (protocol[9] << 8) | (protocol[10] << 16)
+    ```
+
+- The demo code cleaned and modularized it into a [`Sensor()`](./tof_sensor/sensor.py) class.
+
+#### Publishing to MQTT
+
 - Next, I wanted a way to see the data on the fly as it was being collected, and not have to wait for collection to finish before extracting the data from the Raspberry Pi.
 - I registered my Raspberry Pi for AWS IoT core, and allowed it to publish data via MQTT. I could then subscribe to the MQTT topic on my laptop, and see the data as it was being collected in real time. For this, I created a [`Publisher()`](./tof_sensor/publish.py) class and a [`subscribe`](./tof_sensor/subscribe.py) script.
+
+
+#### Autostart
+
 - Finally, I needed the script to autostart on boot. I wrote a [`main.py`](./tof_sensor/main.py) script which continuously collected and published data. I used a [systemd service](./tof_sensor/raspberry_pi_autostart/tof_sensor.service) to autostart my script on the Raspberry Pi.
 - At first, the autostart didn't seem to work no matter what I tried. I finally found that the solution was to have my script sleep for at least 20 seconds before attempt to establish a connection with MQTT. This was because the Raspberry Pi took a while to connect to the internet.
 
@@ -54,5 +85,6 @@ The goal of this project is to collect data on the passing distance of cars to b
 - I decided to use [Decathlon's Universal Smartphone Bike Mount](https://www.decathlon.sg/p/universal-adhesive-garmin-adapter-for-smartphones-triban-8500817.html) to attach the sensor.
 - In SolidWorks, I designed a simple frame which I could screw the sensor on. The flat surface of the frame was where I stuck on the bike mount.
 - After some outdoors testing, I realized that the sensor was extremely unreliable when exposed to sunlight. I proceeded to go through another design, before settling on one which not only provided enough shade to mitigate the collection of misserant data, but was also compact enough to prevent interference with pedaling the bike.
+- I was finally ready to do some serious testing.
 
-### Outdoors Testing
+## Outdoors Testing
