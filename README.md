@@ -55,7 +55,7 @@ The goal of this project is to collect data on the passing distance of cars to b
         protocol.append(ord(ser.read(1)))
     ```
 
-- Once done, the data would be organized in the form of a [*protocol*](https://www.waveshare.com/wiki/TOF_Laser_Range_Sensor#Protocol_analysis) consisting of 16 bytes which I needed to read the distance and other relevant measurements from:
+- Once done, the data would be organized in the form of a [*protocol*](https://www.waveshare.com/wiki/TOF_Laser_Range_Sensor#Protocol_analysis) consisting of 16 bytes which I needed to read the distance and other relevant measurements from. In my code, the protocol was a list where each index represented each byte of data. Here is the structure of a protocol:
 
     > Frame Header (3 bytes) + ID (1 Byte) + System Time (4 Bytes) + Distance (3 Bytes) + Signal Strength (2 Bytes) + Reserved? (1 Byte) + Sum Check (1 Byte)
 
@@ -67,6 +67,7 @@ The goal of this project is to collect data on the passing distance of cars to b
     ```
 
 - The demo code cleaned and modularized it into a [`Sensor()`](./tof_sensor/sensor.py) class.
+- However, the protocol is sometimes corrupted and the sensor is unable to output useful information. I still don't know the cause of this and how to prevent it.
 
 #### Publishing to MQTT
 
@@ -84,7 +85,17 @@ The goal of this project is to collect data on the passing distance of cars to b
 - After dealing with the software part of things, I needed to design a physical setup to mount on the bicycle.
 - I decided to use [Decathlon's Universal Smartphone Bike Mount](https://www.decathlon.sg/p/universal-adhesive-garmin-adapter-for-smartphones-triban-8500817.html) to attach the sensor.
 - In SolidWorks, I designed a simple frame which I could screw the sensor on. The flat surface of the frame was where I stuck on the bike mount.
-- After some outdoors testing, I realized that the sensor was extremely unreliable when exposed to sunlight. I proceeded to go through another design, before settling on one which not only provided enough shade to mitigate the collection of misserant data, but was also compact enough to prevent interference with pedaling the bike.
-- I was finally ready to do some serious testing.
+
+    ![Simple Frame](./images/Frame.jpg)
+
+- After some outdoors testing, I realized that the sensor was extremely unreliable when exposed to sunlight. I proceeded to design a shade for the frame to mitigate the collection of missearnt data.
+
+    ![Shade](./images/Shade.jpg)
+    ![Frame and Shade](./images/Frame%20and%20Shade.jpg)
+
+- I finally settled on a design which provided enough shade to mitigate the collection of misserant data, but was also compact enough to prevent interference with pedaling the bike.
+
+    ![Final Case 1](./images/Final%20Case%201.jpg)
+    ![Final Case 2](./images/Final%20Case%202.jpg)
 
 ## Outdoors Testing
