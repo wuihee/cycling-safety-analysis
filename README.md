@@ -80,7 +80,7 @@ The goal of this project is to collect data on the passing distance of cars to b
 
 ### Casing Design
 
-- After dealing with the software part of things, I needed to design a physical setup to mount on the bicycle.
+- After dealing with the software part of things, I needed to design a physical setup to mount on the bicycle. The designs can be found [here](./casing_designs/).
 - I decided to use [Decathlon's Universal Smartphone Bike Mount](https://www.decathlon.sg/p/universal-adhesive-garmin-adapter-for-smartphones-triban-8500817.html) to attach the sensor.
 - In SolidWorks, I designed a simple frame which I could screw the sensor on. The flat surface of the frame was where I stuck on the bike mount.
 
