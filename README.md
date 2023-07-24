@@ -10,26 +10,25 @@ In Singapore, in the face of bicycle related traffic accidents, traffic rules re
 
 The goal of this project is to collect data on the passing distance of cars to bicycles, as reliable data on this subject of study does not exist. I use a Time of Flight (TOF) to collect the data, which uses infrared technology to measure distance accurately. The sensor is mounted a bike which is used to ride around Singapore roads, collecting data which can be further analyzed.
 
-## Setting Up the TOF Sensor
+## [Basic Tests](./data_analysis/Basic_Tests.ipynb)
 
 1. Setup
-2. Basic Tests
+2. Testing Procedure
 3. Raspberry Pi Setup
 4. Casing Design
 
-### Setup
+### Software Setup
 
 - The first objective was to test the standalone distance measuring capabilities of the sensor.
 - To set it up on Windows, I first installed the [software](https://www.waveshare.com/wiki/File:Waveshare_TOFAssistant.zip) from the [documentation](https://www.waveshare.com/wiki/TOF_Laser_Range_Sensor).
 - I then purchased a USB to TTL adaptor to connect the sensor to my Windows laptop.
 - For the sensor to work, I needed to install the [CP210x USB to UART drivers](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers?tab=downloads).
 
-### Basic Tests
+### Testing Procedure
 
 - Using the software provided, I tested the distance measuring capabilities of the sensor at intervals of 0.5 meters, from 0.5 meters to 5.0 meters.
 - I quickly realized that the sensor would lose a lot of it's accuracy in bright daylight.
 - The default software allowed me to export the data in an excel file format, which I proceeded to extract the data from and graph using Matplotlib.
-- The data analysis can be found in my [Jupyter Notebook](./data_analysis/TOF_Sensor_Data_Analysis.ipynb).
 
 ### Raspberry Pi Setup
 
@@ -97,4 +96,6 @@ The goal of this project is to collect data on the passing distance of cars to b
     ![Final Case 1](./images/Final%20Case%201.jpg)
     ![Final Case 2](./images/Final%20Case%202.jpg)
 
-## Outdoors Testing
+## Simple Outdoors Tests
+
+## [Cycling Tests](./data_analysis/Cycling_Tests.ipynb)
