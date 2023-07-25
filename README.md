@@ -29,6 +29,7 @@ The goal of this project is to collect data on the passing distance of cars to b
 - To set it up on Windows, I first installed the [software](https://www.waveshare.com/wiki/File:Waveshare_TOFAssistant.zip) from the [documentation](https://www.waveshare.com/wiki/TOF_Laser_Range_Sensor).
 - I then purchased a USB to TTL adaptor to connect the sensor to my Windows laptop.
 - For the sensor to work, I needed to install the [CP210x USB to UART drivers](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers?tab=downloads).
+- In addition, for the software to recognize the sensor, I needed to identify COM ports in the device manager by Actions -> Add Legacy Hardware -> And installing Ports (COM & LPT).
 
 ### Testing Procedure
 
