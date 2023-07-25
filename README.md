@@ -10,6 +10,12 @@ In Singapore, in the face of bicycle related traffic accidents, traffic rules re
 
 The goal of this project is to collect data on the passing distance of cars to bicycles, as reliable data on this subject of study does not exist. I use a Time of Flight (TOF) to collect the data, which uses infrared technology to measure distance accurately. The sensor is mounted a bike which is used to ride around Singapore roads, collecting data which can be further analyzed.
 
+### Levels of Testing
+
+1. [Basic Tests](#basic-tests): First, I used the sensor measured the distance of stationary objects to determine its basic capacity.
+2. [Simple Outdoor Tests](#simple-outdoors-tests): Next, I tested sensor's ability to detect moving objects while stationary, and stationary objects while moving on a bike.
+3. [Cycling Tests](#cycling-tests): Finally, as per the goal of this project, I tested the sensor's ability to detect moving cars whilst moving on a bike.
+
 ## [Basic Tests](./data_analysis/Basic_Tests.ipynb)
 
 1. Setup
