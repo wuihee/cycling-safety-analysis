@@ -1,11 +1,10 @@
+import datetime
+
 import matplotlib as mpl
 import numpy as np
 
 
 class BasicGraphs:
-    def __init__(self) -> None:
-        self.intervals = [0.5 * i for i in range(1, 11)]
-
     def set_info(self, ax: mpl.axes.Axes, title: str, xlabel, ylabel, legend=None) -> None:
         """
         Set the information of a graph.
@@ -26,6 +25,9 @@ class BasicGraphs:
         ax.set_yticks(self.intervals)
         if legend:
             ax.legend(legend)
+
+    def __init__(self) -> None:
+        self.intervals = [0.5 * i for i in range(1, 11)]
 
     def plot_mean_vs_actual_distance(self, ax: mpl.axes.Axes, mean: list, title="") -> None:
         """
@@ -121,3 +123,44 @@ class BasicGraphs:
             y.extend(data[i])
 
         return x, y
+
+
+class OutdoorGraphs:
+    def __init__(self) -> None:
+        pass
+
+    def set_info(self, ax: mpl.axes.Axes, title: str, xlabel, ylabel, legend=None) -> None:
+        """
+        Set the information of a graph.
+
+        Args:
+            ax (mpl.Axes.axes): Matplotlib axes object.
+            title (str): Title of graph.
+            xlabel (str): Title of x label.
+            ylabel (str): Title of y label.
+            xticks (list): x axis tick values.
+            yticks (list): y axis tick values.
+            legend (list): Graph legend.
+        """
+        ax.set_title(title)
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+        if legend:
+            ax.legend(legend)
+
+    def scatter_time_vs_distance(self, ax: mpl.axes.Axes, timing: list[datetime.datetime], distances: list[int], title="") -> None:
+        """
+        Plot a scatter plot of time against distance.
+
+        Args:
+            ax (mpl.axes.Axes): Matplotlib axes object.
+            timing (list[datetime.datetime]): List of timings for each distance measured.
+            distances (list[int]): List of distances measured by the sensor.
+            title (str, optional): Title of the graph. Defaults to "".
+        """
+        ax.scatter(timing, distances, s=12)
+        self.set_info(ax, title, "Time", "Distance (mm)")
+
+    def annotate_graph(self, ax: mpl.axes.Axes, timing: str, distance: int, description="") -> None:
+        timing = datetime.datetime.strptime(timing, "%H:%M:%S")
+        ax.annotate(description, xy=(timing, distance), xycoords="data", xytext=(timing, distance - 500), arrowprops=dict(arrowstyle="->"))
