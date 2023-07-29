@@ -55,11 +55,11 @@ class DataCleaner:
             if distance >= 2500:
                 cleaned_data[i] = -1
 
+        # Points must be clustered together to be considered a pass.
         for i, distance in enumerate(cleaned_data):
             if distance == -1:
                 continue
 
-            # Points must be clustered together to be considered a pass.
             neighbors = self.get_neighbors(cleaned_data, i)
             if len(neighbors) <= 1:
                 cleaned_data[i] = -1
