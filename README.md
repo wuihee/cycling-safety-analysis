@@ -102,7 +102,7 @@ The goal of this project is to collect data on the passing distance of cars to b
     ![Final Case 1](./images/Final%20Case%201.jpg)
     ![Final Case 2](./images/Final%20Case%202.jpg)
 
-## [Outdoors Tests](./data_analysis/Outdoors_Tests.ipynb)
+## [Outdoor Tests](./data_analysis/Outdoor_Tests.ipynb)
 
 1. Stationary Test
 2. Cycling Tests
