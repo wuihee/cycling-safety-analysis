@@ -110,3 +110,9 @@ The goal of this project is to collect data on the passing distance of cars to b
 ### Stationary Test
 
 - First, I wanted to measure the distance measuring capabilities of the sensor in a more controlled environment. So instead of jumping straight to cycling, I parked the bike along a busy road and recorded the data the sensor measured from the passing cars.
+- Next, the bike was ridden along Lakeside Rd and the sensor was used to detect overtaking vehicles.
+
+### TODO
+
+- Refactor `clean_spurious_data()`
+- Improve `_remove_null_values()` so time can be plotted with signal strength.
