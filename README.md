@@ -13,7 +13,7 @@ The goal of this project is to collect data on the passing distance of cars to b
 ### Levels of Testing
 
 1. [Basic Tests](#basic-tests): First, I used the sensor measured the distance of stationary objects to determine its basic capacity.
-2. [Outdoor Tests](#outdoors-tests): Next, I tested sensor's ability to detect moving vehicles while stationary. Finally, as per the goal of this project, I tested the sensor's ability to detect moving cars whilst moving on a bike.
+2. [Outdoor Tests](#outdoor-tests): Next, I tested sensor's ability to detect moving vehicles while stationary. Finally, as per the goal of this project, I tested the sensor's ability to detect moving cars whilst moving on a bike.
 
 ## [Basic Tests](./data_analysis/Basic_Tests.ipynb)
 
@@ -105,14 +105,18 @@ The goal of this project is to collect data on the passing distance of cars to b
 ## [Outdoor Tests](./data_analysis/Outdoor_Tests.ipynb)
 
 1. Stationary Test
-2. Cycling Tests
+2. Code Improvements
+3. Cycling Tests
 
 ### Stationary Test
 
 - First, I wanted to measure the distance measuring capabilities of the sensor in a more controlled environment. So instead of jumping straight to cycling, I parked the bike along a busy road and recorded the data the sensor measured from the passing cars.
+
+### Code Improvements
+
+- Takes very long to connect to the internet.
+- Sensor will break easily.
+
+### Cycling Tests
+
 - Next, the bike was ridden along Lakeside Rd and the sensor was used to detect overtaking vehicles.
-
-### TODO
-
-- Refactor `clean_spurious_data()`
-- Improve `_remove_null_values()` so time can be plotted with signal strength.
