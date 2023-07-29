@@ -145,6 +145,7 @@ class OutdoorGraphs:
         ax.set_title(title)
         ax.set_xlabel(xlabel)
         ax.set_ylabel(ylabel)
+        ax.set_yticks((0, 1000, 2000, 3000, 4000, 5000))
         if legend:
             ax.legend(legend)
 
@@ -158,9 +159,50 @@ class OutdoorGraphs:
             distances (list[int]): List of distances measured by the sensor.
             title (str, optional): Title of the graph. Defaults to "".
         """
-        ax.scatter(timing, distances, s=12)
+        # Clean the null values from the distances data.
+        non_null_indices = self._get_non_null_indices(distances)
+        x = self._clean_null_values(timing, non_null_indices)
+        y = self._clean_null_values(distances, non_null_indices)
+
+        ax.scatter(x, y, s=12)
         self.set_info(ax, title, "Time", "Distance (mm)")
 
-    def annotate_graph(self, ax: mpl.axes.Axes, timing: str, distance: int, description="") -> None:
-        timing = datetime.datetime.strptime(timing, "%H:%M:%S")
-        ax.annotate(description, xy=(timing, distance), xycoords="data", xytext=(timing, distance - 500), arrowprops=dict(arrowstyle="->"))
+    def _get_non_null_indices(self, data: list[int], null_value=-1) -> list[int]:
+        """
+        Return a list indices in data representing the non null values.
+
+        Args:
+            data (list[int]): Data array to be searched.
+            null_value (int, optional): The null value to check for. Defaults to -1.
+
+        Returns:
+            list[int]: List of indices.
+        """
+        return [i for i in range(len(data)) if data[i] != null_value]
+
+    def _clean_null_values(self, data: list[int], non_null_indices: list[int]) -> list[int]:
+        """
+        Return the data containing all points that are not null. Used to plot a cleaner
+        scatter graph.
+
+        Args:
+            data (list[int]): Data array to be searched.
+            non_null_indices (list[int]): non_null_indices[i] indicates that the data[i] is
+                                          non null.
+
+        Returns:
+            list[int]: New data which has no null values.
+        """
+        return [data[i] for i in non_null_indices]
+
+    def _convert_to_datetime(self, timing: str) -> datetime.datetime:
+        """
+        Convert string to datetime object.
+
+        Args:
+            timing (str): Format of string is HH:MM:SS.
+
+        Returns:
+            datetime.datetime: String as a datetime object.
+        """
+        return datetime.datetime.strptime(timing, "%H:%M:%S")

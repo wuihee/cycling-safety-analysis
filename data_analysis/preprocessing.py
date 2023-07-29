@@ -38,30 +38,6 @@ class DataCleaner:
 
         return cleaned_array
 
-    def remove_null_points(self, x: list, y: list, null_value=-1) -> tuple[list, list]:
-        """
-        Given the x and y values for a graph, remove all points where y = null_value.
-        This is to prevent a whole row of -1 distances being plotted at the bottom of the graph.
-
-        Args:
-            x (list): x values to plot.
-            y (list): y values to plot
-            null_value (int, optional): The null value to be removed. Defaults to -1.
-
-        Returns:
-            tuple[list, list]: _description_
-        """
-        n = len(x)
-        new_x, new_y = [], []
-
-        for i in range(n):
-            if y[i] == null_value:
-                continue
-            new_x.append(x[i])
-            new_y.append(y[i])
-
-        return new_x, new_y
-
     def clean_spurious_data(self, data: list[int]) -> list[int]:
         """
         Attempt to remove spurious data by removing standalone points.
@@ -74,10 +50,16 @@ class DataCleaner:
         """
         cleaned_data = data.copy()
 
+        # Remove points greater than 2.5m.
+        for i, distance in enumerate(cleaned_data):
+            if distance >= 2500:
+                cleaned_data[i] = -1
+
         for i, distance in enumerate(cleaned_data):
             if distance == -1:
                 continue
 
+            # Points must be clustered together to be considered a pass.
             neighbors = self.get_neighbors(cleaned_data, i)
             if len(neighbors) <= 1:
                 cleaned_data[i] = -1
@@ -94,13 +76,13 @@ class DataCleaner:
             window (int): Window to look for neighbors.
 
         Returns:
-            list[int]: Non -1 neighbors.
+            list[int]: Indices of the non -1 neighbors.
         """
         neighbors = []
 
         for i in range(max(0, index - window), min(len(data), index + window + 1)):
             if data[i] != -1:
-                neighbors.append(data[i])
+                neighbors.append(i)
 
         return neighbors
 
