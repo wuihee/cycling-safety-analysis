@@ -58,7 +58,7 @@ def get_laser_data_from_txt(file_path: pathlib.Path) -> list[str]:
 
     # Remove the first and last points that are not distance measurements.
     with open(file_path) as file:
-        for measurement in file.readlines()[1:-1]:
+        for measurement in file.readlines():
             points.append(measurement.rstrip())
 
     return points
