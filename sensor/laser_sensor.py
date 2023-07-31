@@ -3,12 +3,12 @@ import serial
 
 class LaserCommands:
     GET_STATUS = b"\xaa\x80\x00\x00\x80"
-    DISTANCE = b"\xaa\x00\x00\x20\x00\x01\x00\x00\x21"
+    MEASURE_DISTANCE = b"\xaa\x00\x00\x20\x00\x01\x00\x00\x21"
 
 
 class LaserSensor:
     def __init__(self) -> None:
-        self.PORT = "/dev/ttyUSB0"
+        self.PORT = "/dev/ttyUSB1"
         self.BAUDRATE = 115200
         self.ser = serial.Serial(self.PORT, self.BAUDRATE)
         self.ser.reset_input_buffer()
@@ -22,7 +22,7 @@ class LaserSensor:
         print(self._convert_protocol_to_list(protocol))
 
     def measure_distance(self) -> int:
-        self._send_command(LaserCommands.DISTANCE)
+        self._send_command(LaserCommands.MEASURE_DISTANCE)
         protocol = self._read_protocol(13)
         protocol = self._convert_protocol_to_list(protocol)
         return self._get_distance_from_protocol(protocol)
@@ -54,8 +54,3 @@ class LaserSensor:
 
     def _get_distance_from_protocol(self, data: list[str]) -> int:
         return int("".join(data[7:10]), base=16)
-
-
-laser = LaserSensor()
-distance = laser.measure_distance()
-print(distance / 1000)
