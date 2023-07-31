@@ -1,9 +1,5 @@
 # Traffic Data Collection
 
-## TODO
-
-- Rewrite README and reports.
-
 ## Project Overview
 
 ### Context
@@ -12,19 +8,21 @@ In Singapore, in the face of bicycle related traffic accidents, traffic rules re
 
 ### Objective
 
-The goal of this project is to collect data on the passing distance of cars to bicycles, as reliable data on this subject of study does not exist. I use a Time of Flight (TOF) to collect the data, which uses infrared technology to measure distance accurately. The sensor is mounted a bike which is used to ride around Singapore roads, collecting data which can be further analyzed.
+The goal of this project is to collect data on the passing distance of cars to bicycles, as reliable data on this subject of study does not exist. I used two different sensors - a Time of Flight (TOF), and laser sensor to measure the distance of passing vehicles. The sensors were mounted a bike which was used to ride around Singapore roads and collect data.
 
-### Levels of Testing
+### Testing
 
-1. [Basic Tests](#basic-tests): First, I used the sensor measured the distance of stationary objects to determine its basic capacity.
-2. [Outdoor Tests](#outdoor-tests): Next, I tested sensor's ability to detect moving vehicles while stationary. Finally, as per the goal of this project, I tested the sensor's ability to detect moving cars whilst moving on a bike.
+I analyze the results of each test in a separate Jupyter Notebook.
 
-## [Basic Tests](./data_analysis/TOF_Basic_Tests.ipynb)
+- [TOF Sensor Basic Tests](./data_analysis/TOF_Basic_Tests.ipynb)
+- [TOF Sensor Outdoor Tests](./data_analysis/TOF_Outdoor_Tests.ipynb)
+- [Laser Sensor Basic Tests](./data_analysis/Laser_Basic_Tests.ipynb)
+
+## TOF Sensor
 
 1. Software Setup
-2. Testing Procedure
-3. Raspberry Pi Setup
-4. Casing Design
+2. Raspberry Pi Setup
+3. Casing Design
 
 ### Software Setup
 
@@ -33,12 +31,6 @@ The goal of this project is to collect data on the passing distance of cars to b
 - I then purchased a USB to TTL adaptor to connect the sensor to my Windows laptop.
 - For the sensor to work, I needed to install the [CP210x USB to UART drivers](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers?tab=downloads).
 - In addition, for the software to recognize the sensor, I needed to identify COM ports in the device manager by Actions &rarr; Add Legacy Hardware &rarr; And installing Ports (COM & LPT).
-
-### Testing Procedure
-
-- Using the software provided, I tested the distance measuring capabilities of the sensor at intervals of 0.5 meters, from 0.5 meters to 5.0 meters.
-- I quickly realized that the sensor would lose a lot of it's accuracy in bright daylight.
-- The default software allowed me to export the data in an excel file format, which I proceeded to extract the data from and graph using Matplotlib.
 
 ### Raspberry Pi Setup
 
@@ -106,21 +98,8 @@ The goal of this project is to collect data on the passing distance of cars to b
     ![Final Case 1](./images/Final%20Case%201.jpg)
     ![Final Case 2](./images/Final%20Case%202.jpg)
 
-## [Outdoor Tests](./data_analysis/TOF_Outdoor_Tests.ipynb)
+## Laser Sensor
 
-1. Stationary Test
-2. Code Improvements
-3. Cycling Tests
-
-### Stationary Test
-
-- First, I wanted to measure the distance measuring capabilities of the sensor in a more controlled environment. So instead of jumping straight to cycling, I parked the bike along a busy road and recorded the data the sensor measured from the passing cars.
-
-### Code Improvements
-
-- Takes very long to connect to the internet.
-- Sensor will break easily.
-
-### Cycling Tests
-
-- Next, the bike was ridden along Lakeside Rd and the sensor was used to detect overtaking vehicles.
+1. Software Setup
+2. Raspberry Pi Setup
+3. Casing Design
