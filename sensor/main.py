@@ -1,15 +1,15 @@
 import logging
 
 from publish import Publisher
-from sensor import Sensor
-from utils import cd_to_parent_dir, write_to_file, restart_script
+from tof_sensor import TOFSensor
+from utils import cd_to_parent_dir, restart_script, write_to_file
 
 cd_to_parent_dir()
 logging.basicConfig(filename="./files/tof.log", level=logging.DEBUG)
 logging.debug("Starting...")
 
 publisher = Publisher(sleep=0)
-sensor = Sensor()
+sensor = TOFSensor()
 
 while True:
     data = sensor.get_data()

@@ -1,5 +1,4 @@
 import os
-import sys
 
 
 def cd_to_parent_dir() -> None:
@@ -12,7 +11,7 @@ def cd_to_parent_dir() -> None:
 def write_to_file(path: str, message: str, mode="a") -> None:
     """
     Utility function to write message to file.
-    
+
     Args:
         (str) path: Path to file.
         (str) message: Message to write.
@@ -20,7 +19,3 @@ def write_to_file(path: str, message: str, mode="a") -> None:
     """
     with open(path, mode) as file:
         file.write(message + "\n")
-        
-
-def restart_script():
-    os.execv(os.path.realpath(__file__), sys.argv)

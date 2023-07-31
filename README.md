@@ -1,5 +1,11 @@
 # Traffic Data Collection
 
+## TODO
+
+- Complete basic tests report for the laser.
+- Refactor `tof_sensor.py` code and add ability to restart script.
+- Complete `laser_sensor.py`.
+
 ## Project Overview
 
 ### Context

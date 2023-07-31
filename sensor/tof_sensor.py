@@ -2,15 +2,13 @@ import datetime
 
 import serial
 
-# 921600 is SUPER important.
-ser = serial.Serial("/dev/ttyS0", 921600)
-ser.reset_input_buffer()
 
-
-class Sensor:
+class TOFSensor:
     def __init__(self) -> None:
         self.TOF_HEADER = 87, 0, 255
         self.TOF_LENGTH = 16
+        self.ser = serial.Serial("/dev/ttyS0", 921600)
+        self.ser.reset_input_buffer()
 
     @property
     def current_time(self) -> str:
@@ -30,7 +28,7 @@ class Sensor:
         Returns:
             str: Returns a string containing the time, distance, and signal strength.
         """
-        if ser.in_waiting < 16:
+        if self.ser.in_waiting < 16:
             return ""
 
         protocol = self.get_protocol()
@@ -55,7 +53,7 @@ class Sensor:
         """
         protocol = ()
         for _ in range(0, 16):
-            protocol += (ord(ser.read(1)),)
+            protocol += (ord(self.ser.read(1)),)
         return protocol
 
     def is_valid_protocol(self, protocol: tuple[int]) -> bool:
