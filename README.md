@@ -108,5 +108,5 @@ I analyze the results of each test in a separate Jupyter Notebook.
 
 - Unlike the TOF sensor, the software and documentation for the laser sensor had to be acquired directly from the manufacturers.
 - The sensor came pre-installed with a USB to TTL adaptor.
-- I used the same drivers and steps as per the [TOF sensor](#tof-sensor---software-setup).
+- I used the same [CP210x USB to UART drivers](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers?tab=downloads) as per the TOF sensor and activated COM Ports on Windows.
 - I only got the software to work with the sensor once I changed the baude rate settings to 115200bps.
