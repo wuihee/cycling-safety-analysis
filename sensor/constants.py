@@ -6,8 +6,3 @@ class AWSConstants:
     AWS_CERTIFICATE = "./certs/device.pem.crt"
     AWS_PRIVATE_KEY = "./certs/private.pem.key"
     AWS_ROOT_CA = "./certs/Amazon-root-CA-1.pem"
-
-
-class LaserConstants:
-    PORT = "/dev/ttyUSB0"
-    BAUDRATE = 115200
