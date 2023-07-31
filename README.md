@@ -24,7 +24,7 @@ I analyze the results of each test in a separate Jupyter Notebook.
 2. Raspberry Pi Setup
 3. Casing Design
 
-### Software Setup
+### TOF Sensor - Software Setup
 
 - The first objective was to test the standalone distance measuring capabilities of the sensor.
 - To set it up on Windows, I first installed the [software](https://www.waveshare.com/wiki/File:Waveshare_TOFAssistant.zip) from the [documentation](https://www.waveshare.com/wiki/TOF_Laser_Range_Sensor).
@@ -32,7 +32,7 @@ I analyze the results of each test in a separate Jupyter Notebook.
 - For the sensor to work, I needed to install the [CP210x USB to UART drivers](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers?tab=downloads).
 - In addition, for the software to recognize the sensor, I needed to identify COM ports in the device manager by Actions &rarr; Add Legacy Hardware &rarr; And installing Ports (COM & LPT).
 
-### Raspberry Pi Setup
+### TOF Sensor - Raspberry Pi Setup
 
 #### TOF Sensor Python API
 
@@ -80,7 +80,7 @@ I analyze the results of each test in a separate Jupyter Notebook.
 - Finally, I needed the script to autostart on boot. I wrote a [`main.py`](./tof_sensor/main.py) script which continuously collected and published data. I used a [systemd service](./tof_sensor/raspberry_pi_autostart/tof_sensor.service) to autostart my script on the Raspberry Pi.
 - At first, the autostart didn't seem to work no matter what I tried. I finally found that the solution was to have my script sleep for at least 20 seconds before attempt to establish a connection with MQTT. This was because the Raspberry Pi took a while to connect to the internet.
 
-### Casing Design
+### TOF Sensor - Casing Design
 
 - After dealing with the software part of things, I needed to design a physical setup to mount on the bicycle. The designs can be found [here](./casing_designs/).
 - I decided to use [Decathlon's Universal Smartphone Bike Mount](https://www.decathlon.sg/p/universal-adhesive-garmin-adapter-for-smartphones-triban-8500817.html) to attach the sensor.
@@ -103,3 +103,10 @@ I analyze the results of each test in a separate Jupyter Notebook.
 1. Software Setup
 2. Raspberry Pi Setup
 3. Casing Design
+
+### Laser Sensor - Software Setup
+
+- Unlike the TOF sensor, the software and documentation for the laser sensor had to be acquired directly from the manufacturers.
+- The sensor came pre-installed with a USB to TTL adaptor.
+- I used the same drivers and steps as per the [TOF sensor](#tof-sensor---software-setup).
+- I only got the software to work with the sensor once I changed the baude rate settings to 115200bps.
