@@ -1,5 +1,9 @@
 # Traffic Data Collection
 
+## TODO
+
+- Rewrite README and reports.
+
 ## Project Overview
 
 ### Context
@@ -15,7 +19,7 @@ The goal of this project is to collect data on the passing distance of cars to b
 1. [Basic Tests](#basic-tests): First, I used the sensor measured the distance of stationary objects to determine its basic capacity.
 2. [Outdoor Tests](#outdoor-tests): Next, I tested sensor's ability to detect moving vehicles while stationary. Finally, as per the goal of this project, I tested the sensor's ability to detect moving cars whilst moving on a bike.
 
-## [Basic Tests](./data_analysis/Basic_Tests.ipynb)
+## [Basic Tests](./data_analysis/TOF_Basic_Tests.ipynb)
 
 1. Software Setup
 2. Testing Procedure
@@ -102,7 +106,7 @@ The goal of this project is to collect data on the passing distance of cars to b
     ![Final Case 1](./images/Final%20Case%201.jpg)
     ![Final Case 2](./images/Final%20Case%202.jpg)
 
-## [Outdoor Tests](./data_analysis/Outdoor_Tests.ipynb)
+## [Outdoor Tests](./data_analysis/TOF_Outdoor_Tests.ipynb)
 
 1. Stationary Test
 2. Code Improvements
