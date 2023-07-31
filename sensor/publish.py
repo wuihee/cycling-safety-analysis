@@ -5,7 +5,7 @@ import time
 
 from awscrt import io, mqtt
 from awsiot import mqtt_connection_builder
-from constants import Constants
+from constants import AWSConstants
 
 
 class Publisher:
@@ -31,12 +31,12 @@ class Publisher:
         client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
 
         mqtt_connection = mqtt_connection_builder.mtls_from_path(
-            endpoint=Constants.ENDPOINT,
-            cert_filepath=Constants.AWS_CERTIFICATE,
-            pri_key_filepath=Constants.AWS_PRIVATE_KEY,
+            endpoint=AWSConstants.ENDPOINT,
+            cert_filepath=AWSConstants.AWS_CERTIFICATE,
+            pri_key_filepath=AWSConstants.AWS_PRIVATE_KEY,
             client_bootstrap=client_bootstrap,
-            ca_filepath=Constants.AWS_ROOT_CA,
-            client_id=Constants.CLIENT_ID,
+            ca_filepath=AWSConstants.AWS_ROOT_CA,
+            client_id=AWSConstants.CLIENT_ID,
             clean_session=False,
             keep_alive_secs=6,
         )
@@ -71,7 +71,7 @@ class Publisher:
         Args:
             (str) message: Message to be published.
         """
-        self.mqtt_connection.publish(topic=Constants.TOPIC, payload=json.dumps(message), qos=mqtt.QoS.AT_LEAST_ONCE)
+        self.mqtt_connection.publish(topic=AWSConstants.TOPIC, payload=json.dumps(message), qos=mqtt.QoS.AT_LEAST_ONCE)
 
     def disconnect(self) -> None:
         """

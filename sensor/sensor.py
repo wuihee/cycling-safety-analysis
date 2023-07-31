@@ -1,6 +1,5 @@
 import datetime
 
-import RPi.GPIO as GPIO
 import serial
 
 # 921600 is SUPER important.

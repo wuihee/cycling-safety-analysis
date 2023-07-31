@@ -1,4 +1,4 @@
-class Constants:
+class AWSConstants:
     ENDPOINT = "a1cqysdrxx4ce4-ats.iot.ap-southeast-2.amazonaws.com"
     PORT = 8883
     CLIENT_ID = "tof_sensor"
@@ -6,3 +6,8 @@ class Constants:
     AWS_CERTIFICATE = "./certs/device.pem.crt"
     AWS_PRIVATE_KEY = "./certs/private.pem.key"
     AWS_ROOT_CA = "./certs/Amazon-root-CA-1.pem"
+
+
+class LaserConstants:
+    PORT = "/dev/ttyUSB0"
+    BAUDRATE = 115200
