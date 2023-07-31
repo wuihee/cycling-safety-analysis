@@ -2,13 +2,13 @@ import logging
 
 from publish import Publisher
 from sensor import Sensor
-from utils import cd_to_parent_dir, write_to_file
+from utils import cd_to_parent_dir, write_to_file, restart_script
 
 cd_to_parent_dir()
 logging.basicConfig(filename="./files/tof.log", level=logging.DEBUG)
 logging.debug("Starting...")
 
-publisher = Publisher(sleep=20)
+publisher = Publisher(sleep=0)
 sensor = Sensor()
 
 while True:
@@ -16,7 +16,7 @@ while True:
 
     if data == "Invalid Protocol":
         publisher.publish("Invalid protocol encountered. Stopping.")
-        break
+        restart_script()
 
     if data:
         publisher.publish(data)
