@@ -1,10 +1,9 @@
-pyserial
 awscrt
 awsiotsdk
 paho-mqtt
-matplotlib
 matplotlib
 numpy
 pandas
 openpyxl
 scipy
+pyserial
