@@ -44,7 +44,7 @@ class LaserSensor(Sensor):
         Returns:
             list[int]: An array of decimals reprenting the resepective bytes.
         """
-        self._get_value_from_protocol(13)
+        return self._read_protocol(13)
 
     def _is_valid_protocol(self, protocol: list[int]) -> bool:
         """
@@ -56,7 +56,9 @@ class LaserSensor(Sensor):
         Returns:
             bool: True if protocol is valid else false.
         """
-        return sum(protocol[1:-1]) == protocol[-1]
+        if not protocol:
+            return False
+        return sum(protocol[1:-1]) % 256 == protocol[-1]
 
     def _get_distance_from_protocol(self, protocol: str) -> int:
         """
@@ -70,7 +72,7 @@ class LaserSensor(Sensor):
         Returns:
             int: Distance in mm.
         """
-        self._get_value_from_protocol(protocol, 6, 9)
+        return self._get_value_from_protocol(protocol, 6, 9)
 
     def _get_strength_from_protocol(self, protocol: str) -> int:
         """
@@ -84,4 +86,9 @@ class LaserSensor(Sensor):
         Returns:
             int: The higher the signal strength the more inaccurate the distance.
         """
-        self._get_value_from_protocol(protocol, 10, 11)
+        return self._get_value_from_protocol(protocol, 10, 11)
+
+
+if __name__ == "__main__":
+    laser = LaserSensor()
+    print(laser.get_data())

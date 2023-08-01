@@ -3,7 +3,7 @@ from sensor import Sensor
 
 class TOFSensor(Sensor):
     def __init__(self) -> None:
-        super().__init__(self, "/dev/ttyS0", 921600)
+        super().__init__("/dev/ttyS0", 921600)
 
     def get_data(self) -> str:
         """
@@ -23,7 +23,7 @@ class TOFSensor(Sensor):
             tuple[int, int]: distance and signal strength respectively.
         """
         protocol = self._read_distance_protocol()
-        if not self.is_valid_protocol(protocol):
+        if not self._is_valid_protocol(protocol):
             return -1, -1
 
         distance = self._get_distance_from_protocol(protocol)
@@ -39,7 +39,7 @@ class TOFSensor(Sensor):
         Returns:
             list[int]: An array of decimals reprenting the resepective bytes.
         """
-        self._read_protocol(16)
+        return self._read_protocol(16)
 
     def _is_valid_protocol(self, protocol: list[int]) -> bool:
         """
@@ -51,7 +51,9 @@ class TOFSensor(Sensor):
         Returns:
             bool: True if protocol is valid else false.
         """
-        return sum(protocol[:-1]) == protocol[-1]
+        if not protocol:
+            return None
+        return sum(protocol[:-1]) % 256 == protocol[-1]
 
     def _get_distance_from_protocol(self, protocol: str) -> int:
         """
@@ -65,7 +67,7 @@ class TOFSensor(Sensor):
         Returns:
             int: Distance in mm.
         """
-        self._get_value_from_protocol(protocol, 8, 10)
+        return self._get_value_from_protocol(protocol, 8, 10)
 
     def _get_strength_from_protocol(self, protocol: str) -> int:
         """
@@ -79,4 +81,9 @@ class TOFSensor(Sensor):
         Returns:
             int: The higher the signal strength the more inaccurate the distance.
         """
-        self._get_value_from_protocol(protocol, 12, 13)
+        return self._get_value_from_protocol(protocol, 12, 13)
+
+
+if __name__ == "__main__":
+    sensor = TOFSensor()
+    print(sensor.get_data())

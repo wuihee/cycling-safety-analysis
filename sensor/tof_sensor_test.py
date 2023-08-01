@@ -28,9 +28,6 @@ class TOFSensor:
         Returns:
             str: Returns a string containing the time, distance, and signal strength.
         """
-        if self.ser.in_waiting < 16:
-            return ""
-
         protocol = self.get_protocol()
         if not self.is_valid_protocol(protocol):
             return "Invalid Protocol"
