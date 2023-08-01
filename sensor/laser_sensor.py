@@ -12,12 +12,12 @@ class LaserSensor:
     def __init__(self) -> None:
         self.ser = serial.Serial(port=None, baudrate=115200)
         self._connect_to_device()
-        
+
     @property
     def current_time(self) -> str:
         """
         Returns the current time.
-        
+
         Returns:
             str: Format is HH:MM:SS
         """
@@ -33,16 +33,22 @@ class LaserSensor:
         print(protocol)
 
     def measure_distance(self) -> tuple[int, int]:
+        """
+        Get a distance reading from the sensor.
+
+        Returns:
+            tuple[int, int]: Distance and signal strength respectively.
+        """
         self._send_command(LaserCommands.MEASURE_DISTANCE)
         protocol = self._read_protocol(13)
         distance = self._get_distance_from_protocol(protocol)
         signal_strength = self._get_signal_strength_from_protocol(protocol)
         return distance, signal_strength
-    
+
     def get_data(self) -> str:
         distance, signal_strength = self.measure_distance()
         return f"{self.current_time} {distance} {signal_strength}"
-    
+
     def _connect_to_device(self) -> None:
         ports = ("/dev/ttyUSB0", "/dev/ttyUSB1")
         for port in ports:
@@ -82,16 +88,16 @@ class LaserSensor:
         distance_bytes = protocol[6:10]
         hex_string = "".join(self._to_hex(byte) for byte in distance_bytes)
         return int(hex_string, base=16)
-    
+
     def _get_signal_strength_from_protocol(self, protocol: list[int]) -> int:
         signal_strength_bytes = protocol[10:12]
         hex_string = "".join(self._to_hex(byte) for byte in signal_strength_bytes)
         return int(hex_string, base=16)
-    
+
     def _to_hex(self, byte: int) -> str:
         return hex(byte)[2:].zfill(2)
-    
-    
+
+
 if __name__ == "__main__":
     sensor = LaserSensor()
     print(sensor.measure_distance())
