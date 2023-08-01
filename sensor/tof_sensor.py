@@ -1,122 +1,82 @@
-import datetime
-
-import serial
+from sensor import Sensor
 
 
-class TOFSensor:
+class TOFSensor(Sensor):
     def __init__(self) -> None:
-        self.TOF_HEADER = 87, 0, 255
-        self.TOF_LENGTH = 16
-        self.ser = serial.Serial("/dev/ttyS0", 921600)
-        self.ser.reset_input_buffer()
-
-    @property
-    def current_time(self) -> str:
-        """
-        Return the current time.
-
-        Returns:
-            str: Format is HH:MM:SS.
-        """
-        t = str(datetime.datetime.now())
-        return t.split(" ")[1].split(".")[0]
+        super().__init__(self, "/dev/ttyS0", 921600)
 
     def get_data(self) -> str:
         """
-        Returns time and distance measured by the TOF sensor currently.
+        Get data in a consistent format to be published to MQTT.
 
         Returns:
-            str: Returns a string containing the time, distance, and signal strength.
+            str: Formatted data consisting of the time, distance and signal strength.
         """
-        if self.ser.in_waiting < 16:
-            return ""
+        distance, signal_strength = self.measure_distance()
+        return f"{self.current_time} {distance} {signal_strength}"
 
-        protocol = self.get_protocol()
+    def measure_distance(self) -> tuple[int, int]:
+        """
+        Measure the current distance with the laser sensor.
+
+        Returns:
+            tuple[int, int]: distance and signal strength respectively.
+        """
+        protocol = self._read_distance_protocol()
         if not self.is_valid_protocol(protocol):
-            return "Invalid Protocol"
+            return -1, -1
 
-        signal_strength = self.get_signal_strength(protocol)
-        if signal_strength == 0:
-            data = f"{self.current_time} -1 0"
-        else:
-            distance = self.get_distance(protocol)
-            data = f"{self.current_time} {distance} {signal_strength}"
+        distance = self._get_distance_from_protocol(protocol)
+        strength = self._get_strength_from_protocol(protocol)
+        if strength == 0:
+            distance = -1
+        return distance, strength
 
-        return data
-
-    def get_protocol(self) -> tuple[int]:
+    def _read_distance_protocol(self) -> list[int]:
         """
-        Reads from serial and retrieves the TOF protocol.
+        Read the protocol created by measuring distance, which is 13 bytes long.
 
         Returns:
-            tuple[int]: Protocol includes: Frame Header + Function Mark + Data + Sum Check
+            list[int]: An array of decimals reprenting the resepective bytes.
         """
-        protocol = ()
-        for _ in range(0, 16):
-            protocol += (ord(self.ser.read(1)),)
-        return protocol
+        self._read_protocol(16)
 
-    def is_valid_protocol(self, protocol: tuple[int]) -> bool:
+    def _is_valid_protocol(self, protocol: list[int]) -> bool:
         """
-        Verify the entire protocol.
-
-        Returns:
-            bool: Return true if the protocol is valid else false.
-        """
-        if self.is_valid_header(protocol) and self.is_valid_checksum(protocol):
-            return True
-        return False
-
-    def is_valid_header(self, protocol: tuple[int]) -> bool:
-        """
-        Verify the protocol header.
-
-        Returns:
-            bool: Returns true if the header is valid else false.
-        """
-        if protocol[:3] == self.TOF_HEADER:
-            return True
-        return False
-
-    def is_valid_checksum(self, protocol: tuple[int]) -> bool:
-        """
-        Verify the protocol checksum.
-
-        Returns:
-            bool: Returns true if the checksum is valid else false.
-        """
-        if len(protocol) < self.TOF_LENGTH:
-            return False
-
-        TOF_check = sum(protocol[i] for i in range(self.TOF_LENGTH - 1)) % 256
-        if TOF_check == protocol[self.TOF_LENGTH - 1]:
-            return True
-        return False
-
-    def get_signal_strength(self, protocol: tuple[int]) -> int:
-        """
-        Get the signal strength of the current measurement.
+        Determine if the protocol is valid.
 
         Args:
-            (tuple[int]) protocol: The current TOF protocol data.
+            protocol (list[int]): The protocol of data from the sensor.
 
         Returns:
-            int: Returns an integer indicating signal strength.
+            bool: True if protocol is valid else false.
         """
-        return (protocol[12]) | (protocol[13] << 8)
+        return sum(protocol[:-1]) == protocol[-1]
 
-    def get_distance(self, protocol: tuple[int]) -> int:
+    def _get_distance_from_protocol(self, protocol: str) -> int:
         """
-        Get the distance measured by the sensor.
+        Find the distance measured given a distance protocol. The distance
+        is found by representing bytes 8 to 10 (0-based indexing), converting
+        them to hex and finding the integer representation.
 
         Args:
-            (tuple[int]) protocol: The current TOF protocol data.
+            protocol (str): Distance protocol from self._read_distance_prtocol().
 
         Returns:
-            int: Returns an integer indicating the distance (mm).
+            int: Distance in mm.
         """
-        return protocol[8] | (protocol[9] << 8) | (protocol[10] << 16)
+        self._get_value_from_protocol(protocol, 8, 10)
 
+    def _get_strength_from_protocol(self, protocol: str) -> int:
+        """
+        Find the signal strength from a given distance protocol. The signal
+        strength is found by converting bytes 12 and 13 (0-based indexing)
+        to hex and finding the integer representation.
 
-if __name__ == "__main__":
-    print("sensor module to be imported.")
+        Args:
+            protocol (str): Distance protocol from self._read_distance_prtocol().
+
+        Returns:
+            int: The higher the signal strength the more inaccurate the distance.
+        """
+        self._get_value_from_protocol(protocol, 12, 13)

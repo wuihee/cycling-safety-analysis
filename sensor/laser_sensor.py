@@ -1,103 +1,87 @@
-import datetime
-
-import serial
+from sensor import Sensor
 
 
-class LaserCommands:
-    GET_STATUS = b"\xaa\x80\x00\x00\x80"
-    MEASURE_DISTANCE = b"\xaa\x00\x00\x20\x00\x01\x00\x00\x21"
-
-
-class LaserSensor:
+class LaserSensor(Sensor):
     def __init__(self) -> None:
-        self.ser = serial.Serial(port=None, baudrate=115200)
-        self._connect_to_device()
-
-    @property
-    def current_time(self) -> str:
-        """
-        Returns the current time.
-
-        Returns:
-            str: Format is HH:MM:SS
-        """
-        t = str(datetime.datetime.now())
-        return t.split(" ")[1].split(".")[0]
-
-    def status(self) -> None:
-        """
-        Get the status of the module.
-        """
-        self._send_command(LaserCommands.GET_STATUS)
-        protocol = self._read_protocol(9)
-        print(protocol)
-
-    def measure_distance(self) -> tuple[int, int]:
-        """
-        Get a distance reading from the sensor.
-
-        Returns:
-            tuple[int, int]: Distance and signal strength respectively.
-        """
-        self._send_command(LaserCommands.MEASURE_DISTANCE)
-        protocol = self._read_protocol(13)
-        distance = self._get_distance_from_protocol(protocol)
-        signal_strength = self._get_signal_strength_from_protocol(protocol)
-        return distance, signal_strength
+        super().__init__("/dev/ttyUSB0", 115200)
 
     def get_data(self) -> str:
+        """
+        Get data in a consistent format to be published to MQTT.
+
+        Returns:
+            str: Formatted data consisting of the time, distance and signal strength.
+        """
         distance, signal_strength = self.measure_distance()
         return f"{self.current_time} {distance} {signal_strength}"
 
-    def _connect_to_device(self) -> None:
-        ports = ("/dev/ttyUSB0", "/dev/ttyUSB1")
-        for port in ports:
-            try:
-                self.ser.port = port
-                self.ser.open()
-                return True
-            except Exception as e:
-                print(f"Wrong port, trying again. {e}")
-        return False
-
-    def _send_command(self, command: str) -> None:
+    def measure_distance(self) -> tuple[int, int]:
         """
-        Send a command to the sensor.
-
-        Args:
-            command (str): Appropriate command consisting of a string of hexadecimal bytes.
-        """
-        self.ser.write(command)
-
-    def _read_protocol(self, number_of_bytes: int) -> list[int]:
-        """
-        Read a the protocol from the sensor.
-
-        Args:
-            number_of_bytes (int): Number of bytes to read from the sensor.
+        Measure the current distance with the laser sensor.
 
         Returns:
-            list[int]: List of bytes expressed in decimal.
+            tuple[int, int]: distance and signal strength respectively.
         """
-        return [byte for byte in self.ser.read(number_of_bytes)]
+        self._send_distance_command()
+        protocol = self._read_distance_protocol()
+        if not self._is_valid_protocol(protocol):
+            return -1, -1
+
+        distance = self._get_distance_from_protocol(protocol)
+        strength = self._get_strength_from_protocol(protocol)
+        return distance, strength
+
+    def _send_distance_command(self) -> None:
+        """
+        Tell sensor to measure distance.
+        """
+        self.ser.write(b"\xaa\x00\x00\x20\x00\x01\x00\x00\x21")
+
+    def _read_distance_protocol(self) -> list[int]:
+        """
+        Read the protocol created by measuring distance, which is 13 bytes long.
+
+        Returns:
+            list[int]: An array of decimals reprenting the resepective bytes.
+        """
+        self._get_value_from_protocol(13)
 
     def _is_valid_protocol(self, protocol: list[int]) -> bool:
+        """
+        Determine if the protocol is valid.
+
+        Args:
+            protocol (list[int]): The protocol of data from the sensor.
+
+        Returns:
+            bool: True if protocol is valid else false.
+        """
         return sum(protocol[1:-1]) == protocol[-1]
 
-    def _get_distance_from_protocol(self, protocol: list[int]) -> int:
-        distance_bytes = protocol[6:10]
-        hex_string = "".join(self._to_hex(byte) for byte in distance_bytes)
-        return int(hex_string, base=16)
+    def _get_distance_from_protocol(self, protocol: str) -> int:
+        """
+        Find the distance measured given a distance protocol. The distance
+        is found by representing bytes 6 to 9 (0-based indexing), converting
+        them to hex and finding the integer representation.
 
-    def _get_signal_strength_from_protocol(self, protocol: list[int]) -> int:
-        signal_strength_bytes = protocol[10:12]
-        hex_string = "".join(self._to_hex(byte) for byte in signal_strength_bytes)
-        return int(hex_string, base=16)
+        Args:
+            protocol (str): Distance protocol from self._read_distance_prtocol().
 
-    def _to_hex(self, byte: int) -> str:
-        return hex(byte)[2:].zfill(2)
+        Returns:
+            int: Distance in mm.
+        """
+        self._get_value_from_protocol(protocol, 6, 9)
 
+    def _get_strength_from_protocol(self, protocol: str) -> int:
+        """
+        Find the signal strength from a given distance protocol. The signal
+        strength is found by converting bytes 10 and 11 (0-based indexing)
+        to hex and finding the integer representation.
 
-if __name__ == "__main__":
-    sensor = LaserSensor()
-    print(sensor.measure_distance())
+        Args:
+            protocol (str): Distance protocol from self._read_distance_prtocol().
+
+        Returns:
+            int: The higher the signal strength the more inaccurate the distance.
+        """
+        self._get_value_from_protocol(protocol, 10, 11)
