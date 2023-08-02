@@ -1,9 +1,9 @@
 import logging
 
+from laser_sensor import LaserSensor
 from publish import Publisher
 from tof_sensor import TOFSensor
-from laser_sensor import LaserSensor
-from utils import cd_to_parent_dir, write_to_file, wait_for_internet
+from utils import cd_to_parent_dir, wait_for_internet, write_to_file
 
 cd_to_parent_dir()
 logging.basicConfig(filename="./files/tof.log", level=logging.DEBUG)
