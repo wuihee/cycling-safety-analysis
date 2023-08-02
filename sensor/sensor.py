@@ -30,7 +30,7 @@ class Sensor:
         """
         return [byte for byte in self.ser.read(number_of_bytes)]
 
-    def _get_value_from_protocol(self, protocol: list[int], start: int, end: int) -> int:
+    def _get_value_from_protocol(self, protocol: list[int], start: int, end: int, count=1) -> int:
         """
         Get a speicifed value from the protocol, e.g. distance, signal strength.
 
@@ -38,11 +38,12 @@ class Sensor:
             protocol (list[int]): Protocol from self._read_protocol().
             start (int): The start index of the information.
             end (int): The end index of the information.
+            count (int): The count from start to end. Defaults to 1.
 
         Returns:
             int: The value of the information requested.
         """
-        information = protocol[start : end + 1]
+        information = protocol[start : end + 1 : count]
         return int(self._to_hex_string(information), base=16)
 
     def _to_hex_string(self, information: list[int]) -> str:

@@ -67,7 +67,7 @@ class TOFSensor(Sensor):
         Returns:
             int: Distance in mm.
         """
-        return self._get_value_from_protocol(protocol, 8, 10)
+        return self._get_value_from_protocol(protocol, 10, 7, count=-1)
 
     def _get_strength_from_protocol(self, protocol: str) -> int:
         """
