@@ -1,10 +1,6 @@
-[unit]
-Description=Run TOF Sensor with AWS on startup.
-After=multi-user.target
-
 [Service]
 ExecStart=/usr/bin/python3 /home/wuihee/Desktop/bike-sensor/tof_sensor/raspberry_pi/main.py
-User=REPLACE WITH CURRENT USER. RUN COMMAND: whoami
+User=wuihee
 
 [Install]
 WantedBy=multi-user.target
