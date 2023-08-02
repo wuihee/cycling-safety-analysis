@@ -166,3 +166,4 @@ cython_debug/
 
 # Ignore data files.
 tof_data.txt
+saved_data.txt
