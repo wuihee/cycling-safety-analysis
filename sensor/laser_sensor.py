@@ -90,5 +90,4 @@ class LaserSensor(Sensor):
 
 
 if __name__ == "__main__":
-    laser = LaserSensor()
-    print(laser.get_data())
+    print("Laser sensor module to be imported.")

@@ -67,7 +67,7 @@ class TOFSensor(Sensor):
         Returns:
             int: Distance in mm.
         """
-        return self._get_value_from_protocol(protocol, 10, 7, count=-1)
+        return self._get_value_from_protocol(protocol, 10, 8, count=-1)
 
     def _get_strength_from_protocol(self, protocol: str) -> int:
         """
@@ -81,9 +81,8 @@ class TOFSensor(Sensor):
         Returns:
             int: The higher the signal strength the more inaccurate the distance.
         """
-        return self._get_value_from_protocol(protocol, 12, 13)
+        return self._get_value_from_protocol(protocol, 13, 12)
 
 
 if __name__ == "__main__":
-    sensor = TOFSensor()
-    print(sensor.get_data())
+    print("TOF sensor module to be imported.")

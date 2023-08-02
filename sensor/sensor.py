@@ -43,7 +43,7 @@ class Sensor:
         Returns:
             int: The value of the information requested.
         """
-        information = protocol[start : end + 1 : count]
+        information = protocol[start : end + count : count]
         return int(self._to_hex_string(information), base=16)
 
     def _to_hex_string(self, information: list[int]) -> str:
