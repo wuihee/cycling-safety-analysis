@@ -9,6 +9,7 @@ cd_to_parent_dir()
 logging.basicConfig(filename="./files/tof.log", level=logging.DEBUG)
 logging.debug("Starting...")
 
+# We need to sleep for 20s to wait for the Raspberry Pi to connect to the internet.
 publisher = Publisher(sleep=20)
 
 # Change sensor to either LaserSensor() or TOFSensor() depending on which you're using.
