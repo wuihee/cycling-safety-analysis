@@ -3,17 +3,18 @@ import logging
 from publish import Publisher
 from tof_sensor import TOFSensor
 from laser_sensor import LaserSensor
-from utils import cd_to_parent_dir, write_to_file
+from utils import cd_to_parent_dir, write_to_file, wait_for_internet
 
 cd_to_parent_dir()
 logging.basicConfig(filename="./files/tof.log", level=logging.DEBUG)
 logging.debug("Starting...")
 
-# We need to sleep for 20s to wait for the Raspberry Pi to connect to the internet.
-publisher = Publisher(sleep=20)
+wait_for_internet()
+logging.debug("Connected to internet!")
 
 # Change sensor to either LaserSensor() or TOFSensor() depending on which you're using.
 sensor = LaserSensor()
+publisher = Publisher()
 
 while True:
     data = sensor.get_data()

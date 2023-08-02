@@ -1,5 +1,6 @@
 import os
 import socket
+import time
 
 
 def cd_to_parent_dir() -> None:
@@ -34,3 +35,8 @@ def is_internet_available() -> bool:
         return True
     except OSError:
         return False
+    
+    
+def wait_for_internet() -> None:
+    while not is_internet_available():
+        time.sleep(1)
