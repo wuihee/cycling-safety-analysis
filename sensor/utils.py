@@ -1,4 +1,5 @@
 import os
+import socket
 
 
 def cd_to_parent_dir() -> None:
@@ -19,3 +20,17 @@ def write_to_file(path: str, message: str, mode="a") -> None:
     """
     with open(path, mode) as file:
         file.write(message + "\n")
+
+
+def is_internet_available() -> bool:
+    """
+    Check for internet by tyring to connect to google.com
+
+    Returns:
+        bool: Returns true if there is internet else false.
+    """
+    try:
+        socket.create_connection(("www.google.com", 80), timeout=3)
+        return True
+    except OSError:
+        return False
