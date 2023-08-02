@@ -9,7 +9,7 @@ cd_to_parent_dir()
 logging.basicConfig(filename="./files/tof.log", level=logging.DEBUG)
 logging.debug("Starting...")
 
-publisher = Publisher(sleep=0)
+publisher = Publisher(sleep=20)
 
 # Change sensor to either LaserSensor() or TOFSensor() depending on which you're using.
 sensor = LaserSensor()

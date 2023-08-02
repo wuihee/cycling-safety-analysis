@@ -1,0 +1,10 @@
+[unit]
+Description=Run Laser Sensor with AWS on startup.
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/wuihee/Desktop/Traffic-Data-Collection/sensor/main.py
+User=REPLACE WITH CURRENT USER. RUN COMMAND: whoami
+
+[Install]
+WantedBy=multi-user.target
