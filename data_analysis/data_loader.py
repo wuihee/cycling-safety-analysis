@@ -18,7 +18,7 @@ def get_tof_data_from_xlsx(file_path: pathlib.Path) -> list[int]:
     return list(pd.read_excel(file_path)["distance(m)"][:500])
 
 
-def get_tof_data_from_txt(file_path: pathlib.Path) -> tuple[list]:
+def get_data_from_txt(file_path: pathlib.Path) -> tuple[list]:
     """
     Extract the respective time, distance, and signal strengths recorded from
     a text file.
@@ -77,6 +77,6 @@ def get_data_from_folder(folder_path: pathlib.Path, get_data: Callable) -> list[
                          points from each excel file in the folder.
     """
     data = []
-    for file_path in folder_path.iterdir():
+    for file_path in sorted(folder_path.iterdir()):
         data.append(get_data(file_path))
     return data
