@@ -33,7 +33,7 @@ def get_tof_data_from_xlsx(file_path: pathlib.Path) -> list[int]:
     Returns:
         list[int]: The first 500 points from the excel file.
     """
-    return list(pd.read_excel(file_path)["distance(m)"][:500])
+    return list(pd.read_excel(file_path)["distance(m)"])
 
 
 def get_laser_data_from_txt(file_path: pathlib.Path) -> list[str]:
@@ -80,3 +80,23 @@ def get_data_from_txt(file_path: pathlib.Path) -> tuple[list]:
             signal_strengths.append(int(signal))
 
     return timing, distances, signal_strengths
+
+
+def get_distance_data_from_txt(file_path: pathlib.Path) -> list:
+    """
+    Extract the distance data from a text file.
+
+    Args:
+        file_path (pathlib.Path): File path to the data.
+
+    Returns:
+        list: Returns distances.
+    """
+    distances = []
+
+    with open(file_path) as file:
+        for measurement in file.readlines():
+            _, distance, _ = measurement.split(" ")
+            distances.append(int(distance))
+
+    return distances
