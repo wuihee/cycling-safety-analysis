@@ -18,11 +18,6 @@ publisher = Publisher()
 
 while True:
     data = sensor.get_data()
-
-    if data == "Invalid Protocol":
-        publisher.publish("Invalid protocol encountered. Stopping.")
-
-    if data:
-        publisher.publish(data)
-        write_to_file("./files/saved_data.txt", data)
-        print(data)
+    publisher.publish(data)
+    write_to_file("./files/saved_data.txt", data)
+    print(data)

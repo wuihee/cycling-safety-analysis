@@ -24,9 +24,6 @@ class LaserSensor(Sensor):
         """
         self._send_distance_command()
         protocol = self._read_distance_protocol()
-
-        print(protocol)
-
         if not self._is_valid_protocol(protocol):
             return -1, -1
 
