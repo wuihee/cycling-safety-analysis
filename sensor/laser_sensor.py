@@ -58,7 +58,7 @@ class LaserSensor(Sensor):
         """
         if not protocol:
             return False
-        
+
         # The header must equal "\xAA" i.e. 170.
         if protocol[0] != 170:
             return False

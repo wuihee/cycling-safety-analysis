@@ -53,7 +53,7 @@ class TOFSensor(Sensor):
         """
         if not protocol:
             return False
-        
+
         if protocol[:3] != (87, 0, 255):
             return False
 
