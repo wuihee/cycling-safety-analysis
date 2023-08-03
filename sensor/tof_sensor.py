@@ -52,7 +52,11 @@ class TOFSensor(Sensor):
             bool: True if protocol is valid else false.
         """
         if not protocol:
-            return None
+            return False
+        
+        if protocol[:3] != (87, 0, 255):
+            return False
+
         return sum(protocol[:-1]) % 256 == protocol[-1]
 
     def _get_distance_from_protocol(self, protocol: str) -> int:

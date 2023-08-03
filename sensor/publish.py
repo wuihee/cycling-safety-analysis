@@ -9,14 +9,10 @@ from constants import AWSConstants
 
 
 class Publisher:
-    def __init__(self, sleep=0) -> None:
+    def __init__(self) -> None:
         """
         Intialize an MQTTT connection to send publish messages to.
         """
-        # Sleep to wait for WiFi to connect to Raspberry Pi.
-        if sleep:
-            time.sleep(sleep)
-
         self.mqtt_connection = self.connect()
 
     def connect(self) -> mqtt.Connection:

@@ -24,6 +24,9 @@ class LaserSensor(Sensor):
         """
         self._send_distance_command()
         protocol = self._read_distance_protocol()
+
+        print(protocol)
+
         if not self._is_valid_protocol(protocol):
             return -1, -1
 
@@ -58,6 +61,12 @@ class LaserSensor(Sensor):
         """
         if not protocol:
             return False
+        
+        # The header must equal "\xAA" i.e. 170.
+        if protocol[0] != 170:
+            return False
+
+        # Sum check.
         return sum(protocol[1:-1]) % 256 == protocol[-1]
 
     def _get_distance_from_protocol(self, protocol: str) -> int:
