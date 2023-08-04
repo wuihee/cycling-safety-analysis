@@ -100,13 +100,14 @@ def write_to_new_file(destination_folder: pathlib.Path, file_name: str, data: li
 
 def get_laser_txt_data(file_path: pathlib.Path) -> list[float]:
     """
-    Helper function that
+    Helper function that formats a file of laser data collected by the
+    Raspberry Pi.
 
     Args:
-        file_path (pathlib.Path): _description_
+        file_path (pathlib.Path): Path to raw data file.
 
     Returns:
-        list[float]: _description_
+        list[float]: List of distance data.
     """
     data = []
     with open(file_path) as f:
@@ -118,6 +119,16 @@ def get_laser_txt_data(file_path: pathlib.Path) -> list[float]:
 
 
 def get_laser_protocol_data(file_path: pathlib.Path) -> list[float]:
+    """
+    Helper function that formats a file of laser data collected by the
+    software.
+
+    Args:
+        file_path (pathlib.Path): Path to raw data file.
+
+    Returns:
+        list[float]: List of distance data.
+    """
     data = []
     with open(file_path) as f:
         for line in f.readlines():
