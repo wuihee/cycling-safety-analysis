@@ -19,11 +19,13 @@ os.chdir(os.path.realpath(os.path.dirname(__file__)))
 
 TOF_INDOORS_RAW_DATA = pathlib.Path("./raw_data/tof_basic_tests/indoors")
 TOF_OUTDOORS_RAW_DATA = pathlib.Path("./raw_data/tof_basic_tests/outdoors")
+TOF_WITH_SHADE_RAW_DATA = pathlib.Path("./raw_data/tof_basic_tests/with_shade")
 LASER_INDOORS_RAW_DATA = pathlib.Path("./raw_data/laser_basic_tests/indoors")
 LASER_OUTDOORS_RAW_DATA = pathlib.Path("./raw_data/laser_basic_tests/outdoors")
 
 TOF_INDOORS_DATA = pathlib.Path("./data/tof_basic_tests/indoors")
 TOF_OUTDOORS_DATA = pathlib.Path("./data/tof_basic_tests/outdoors")
+TOF_WITH_SHADE_DATA = pathlib.Path("./data/tof_basic_tests/with_shade")
 LASER_INDOORS_DATA = pathlib.Path("./data/laser_basic_tests/indoors")
 LASER_OUTDOORS_DATA = pathlib.Path("./data/laser_basic_tests/outdoors")
 
@@ -42,7 +44,7 @@ def format_excel_data(source_folder: pathlib.Path, destination_folder: pathlib.P
         write_to_new_file(destination_folder, file_name, data)
 
 
-def format_laser_txt_data(source_folder: pathlib.Path, destination_folder: pathlib.Path) -> None:
+def format_raspberry_pi_data(source_folder: pathlib.Path, destination_folder: pathlib.Path) -> None:
     """
     Format the laser data collected by the Raspberry Pi.
 
@@ -52,7 +54,7 @@ def format_laser_txt_data(source_folder: pathlib.Path, destination_folder: pathl
     """
     for file_path in source_folder.iterdir():
         file_name = get_file_name(file_path)
-        data = get_laser_txt_data(file_path)
+        data = get_raspberry_pi_data(file_path)
         write_to_new_file(destination_folder, file_name, data)
 
 
@@ -98,7 +100,7 @@ def write_to_new_file(destination_folder: pathlib.Path, file_name: str, data: li
             f.write(f"-1 {distance:.2f} -1\n")
 
 
-def get_laser_txt_data(file_path: pathlib.Path) -> list[float]:
+def get_raspberry_pi_data(file_path: pathlib.Path) -> list[float]:
     """
     Helper function that formats a file of laser data collected by the
     Raspberry Pi.
@@ -113,7 +115,9 @@ def get_laser_txt_data(file_path: pathlib.Path) -> list[float]:
     with open(file_path) as f:
         for line in f.readlines():
             _, distance, _ = line.rstrip().split(" ")
-            distance = round(int(distance) / 1000, 2)
+            distance = int(distance)
+            if distance != -1:
+                distance = round(distance / 1000, 2)
             data.append(distance)
     return data
 
@@ -142,5 +146,6 @@ def get_laser_protocol_data(file_path: pathlib.Path) -> list[float]:
 if __name__ == "__main__":
     format_excel_data(TOF_INDOORS_RAW_DATA, TOF_INDOORS_DATA)
     format_excel_data(TOF_OUTDOORS_RAW_DATA, TOF_OUTDOORS_DATA)
+    format_raspberry_pi_data(TOF_WITH_SHADE_RAW_DATA, TOF_WITH_SHADE_DATA)
     format_laser_protocol_data(LASER_INDOORS_RAW_DATA, LASER_INDOORS_DATA)
-    format_laser_txt_data(LASER_OUTDOORS_RAW_DATA, LASER_OUTDOORS_DATA)
+    format_raspberry_pi_data(LASER_OUTDOORS_RAW_DATA, LASER_OUTDOORS_DATA)
