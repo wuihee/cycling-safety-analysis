@@ -139,8 +139,10 @@ To have the sensors collect data while attached to a bike, I needed to attach th
 
 ### Casing Design
 
-- After dealing with the software part of things, I needed to design a physical setup to mount on the bicycle. The designs can be found [here](./casing_designs/).
-- I decided to use [Decathlon's Universal Smartphone Bike Mount](https://www.decathlon.sg/p/universal-adhesive-garmin-adapter-for-smartphones-triban-8500817.html) to attach the sensor.
+After dealing with the software part of things, I needed to design a physical setup to mount on the bicycle. The designs can be found [here](./casing_designs/). I decided to use [Decathlon's Universal Smartphone Bike Mount](https://www.decathlon.sg/p/universal-adhesive-garmin-adapter-for-smartphones-triban-8500817.html) to attach the sensor.
+
+#### TOF Sensor Frame/Case
+
 - In SolidWorks, I designed a simple frame which I could screw the sensor on. The flat surface of the frame was where I stuck on the bike mount.
 
     ![Simple Frame](./images/Frame.jpg)
@@ -155,11 +157,17 @@ To have the sensors collect data while attached to a bike, I needed to attach th
     ![Final Case 1](./images/Final%20Case%201.jpg)
     ![Final Case 2](./images/Final%20Case%202.jpg)
 
+#### Laser Sensor Frame
+
+- Because the laser sensor's reliability wasn't very affected by light, I did not design a shade and stuck with a simple frame.
+
+    ![Laser Frame](./images/Laser%20Case.jpg)
+
 ## Code
 
 A secondary objective I had for this project was to keep my code clean and modular. This was not only to maintain the integrity of my code, but to train myself to write code in a disciplined manner.
 
-I definitely felt that at some points, this level of modularization was unnecessary and a little redundant. However, as someone not used to writing clean code, I took this upon myself as a challenge.
+I definitely felt that at some points, this level of modularization was unnecessary and a little redundant. However, as someone not used to writing clean code, I took this upon myself as a learning experience.
 
 ### Data Analysis Code
 
