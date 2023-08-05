@@ -255,7 +255,7 @@ Both the TOF and laser sensors could be communicated with via serial ports in ve
 
 [`laser_sensor.py`](./sensor/laser_sensor.py) and [`tof_sensor.py`](./sensor/tof_sensor.py) contain the classes `LaserSensor` and `TOFSensor` respectively, which inherit from `Sensor`. Both of these classes could be used interchangably to interact with whichever sensor was needed.
 
-### Publishing Code
+#### Publishing Code
 
 I also needed to publish my data via MQTT to AWS. Instead of building in the publishing feature within each sensor module, I created a [`publish.py`](./sensor/publish.py) which did this indpenedently. [`constants.py`](./sensor/constants.py) contained the constants needed to initialize the `Publisher` module. I could then combine the sensor and publishing object in a very clean way like so.
 
@@ -272,6 +272,6 @@ publisher.publish(data)
 
 I also have a [`subscribe.py`](./sensor/subscribe.py) module meant to be run on another computer. This script would help to receive the data in real time that is being published.
 
-### Auxilliary Code
+#### Auxilliary Code
 
 Finally, I created some auxilliary functions in [`utils.py`](./sensor/utils.py). The most significant one would be `wait_for_internet`, which would ensure a successful connection via MQTT.
