@@ -88,7 +88,7 @@ class DataCleaner:
 
 
 class DataProcessor:
-    def get_mean_measurements(self, data: list[list[float]]) -> list[float]:
+    def get_mean_measurements(self, data: list) -> list[float]:
         """
         Get the mean of a list of data rounded to 2 decimal places.
 
@@ -100,7 +100,7 @@ class DataProcessor:
         """
         return [round(np.mean(i), 2) for i in data]
 
-    def get_standard_deviations(self, data: list[list[float]]) -> list[float]:
+    def get_standard_deviations(self, data: list) -> list[float]:
         """
         Get the standard deviation of a list of data rounded to 2 decimal places.
 
