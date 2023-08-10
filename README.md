@@ -110,6 +110,12 @@ To have the sensors collect data while attached to a bike, I needed to attach th
     distance = int(hex_string, base=16)
     ```
 
+- Sometimes, the sensor will be unable to measure distance and output an invalid protocol. I found that once this happened, the whole script would break and the sensor seemed unable to measure anymore. I realized that this was because the invalid protocol was never cleared from the input buffer, thereby making any subsequent protocols invalid. All I had to do was clear the input buffer.
+
+    ```python
+    ser.flush_input_buffer()
+    ```
+
 - I created a base `Sensor` class in [`sensor.py`](./sensor/sensor.py) which has helper methods to read from the sensor and extract relevant bytes from the different protcols. The modules [`tof_sensor.py`](./sensor/tof_sensor.py) and [`laser_sensor.py`](./sensor/laser_sensor.py) inherit from the `Sensor` class and contain methods to use the sensor to measure distances of the TOF and laser sensor respectively based on their different requirements.
 
 #### Publishing to MQTT
