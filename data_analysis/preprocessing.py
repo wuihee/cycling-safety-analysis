@@ -86,6 +86,19 @@ class DataCleaner:
 
         return neighbors
 
+    def fliter_above(self, data: list[int], threshold: int) -> list[int]:
+        """
+        Filter all points above the given threshold.
+
+        Args:
+            data (list[int]): List of distances.
+            threshold (int): Threshold to filter.
+
+        Returns:
+            list[int]: Distance data but all points above threshold now -1.
+        """
+        return [i if i < threshold else -1 for i in data]
+
 
 class DataProcessor:
     def get_mean_measurements(self, data: list) -> list[float]:
