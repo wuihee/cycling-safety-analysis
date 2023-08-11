@@ -24,7 +24,9 @@ class LaserSensor(Sensor):
         """
         self._send_distance_command()
         protocol = self._read_distance_protocol()
+
         if not self._is_valid_protocol(protocol):
+            self.ser.reset_input_buffer()
             return -1, -1
 
         distance = self._get_distance_from_protocol(protocol)
@@ -35,7 +37,7 @@ class LaserSensor(Sensor):
         """
         Tell sensor to measure distance.
         """
-        self.ser.write(b"\xaa\x00\x00\x20\x00\x01\x00\x00\x21")
+        self.ser.write(b"\xaa\x00\x00\x20\x00\x01\x00\x02\x23")
 
     def _read_distance_protocol(self) -> list[int]:
         """

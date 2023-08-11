@@ -4,6 +4,4 @@ paho-mqtt
 matplotlib
 numpy
 pandas
-openpyxl
-scipy
 pyserial

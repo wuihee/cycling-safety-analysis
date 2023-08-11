@@ -5,7 +5,7 @@ import serial
 
 class Sensor:
     def __init__(self, port: str, baudrate: int) -> None:
-        self.ser = serial.Serial(port=port, baudrate=baudrate, timeout=1)
+        self.ser = serial.Serial(port=port, baudrate=baudrate, timeout=0.3)
 
     @property
     def current_time(self) -> str:
@@ -69,3 +69,7 @@ class Sensor:
             str: Hexamdecimal byte of length.
         """
         return hex(byte)[2:].zfill(2)
+
+
+if __name__ == "__main__":
+    print("Sensor module to be imported.")
