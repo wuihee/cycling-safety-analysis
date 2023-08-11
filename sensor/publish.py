@@ -1,7 +1,6 @@
 import concurrent
 import json
 import logging
-import time
 
 from awscrt import io, mqtt
 from awsiot import mqtt_connection_builder
