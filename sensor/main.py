@@ -2,7 +2,6 @@ import logging
 
 from laser_sensor import LaserSensor
 from publish import Publisher
-from tof_sensor import TOFSensor
 from utils import cd_to_parent_dir, wait_for_internet, write_to_file
 
 cd_to_parent_dir()
@@ -12,9 +11,8 @@ logging.debug("Starting...")
 wait_for_internet()
 logging.debug("Connected to internet!")
 
-# Change sensor to either LaserSensor() or TOFSensor() depending on which you're using.
-sensor = LaserSensor()
 publisher = Publisher()
+sensor = LaserSensor(publisher)
 
 while True:
     data = sensor.get_data()
