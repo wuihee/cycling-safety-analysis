@@ -5,7 +5,8 @@ import serial
 
 class Sensor:
     def __init__(self, port: str, baudrate: int) -> None:
-        self.ser = serial.Serial(port=port, baudrate=baudrate, timeout=0.3)
+        self.ser = serial.Serial(port=port, baudrate=baudrate, timeout=1)
+        self.ser.reset_input_buffer()
 
     @property
     def current_time(self) -> str:

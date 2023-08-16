@@ -1,9 +1,18 @@
 from sensor import Sensor
 
 
+class Commands:
+    SINGLE_MEASURE = b"\xaa\x00\x00\x20\x00\x01\x00\x02\x23"
+    CONTINUOUS = b"\xAA\x00\x00\x20\x00\x01\x12\x07\x3A"
+    CONTINUOUS_SLOW = b"\xaa\x00\x00\x20\x00\x01\x00\x05\x26"
+    CONTINUOUS_FAST = b"\xAA\x00\x00\x24\x00\x01\x00\x07\x2C"
+    CONTINUOUS_AUTO = b"\xAA\x00\x00\x20\x00\x01\x00\x04\x25"
+
+
 class LaserSensor(Sensor):
-    def __init__(self) -> None:
+    def __init__(self, publisher) -> None:
         super().__init__("/dev/ttyUSB0", 115200)
+        self.publisher = publisher
 
     def get_data(self) -> str:
         """
@@ -15,6 +24,13 @@ class LaserSensor(Sensor):
         distance, signal_strength = self.measure_distance()
         return f"{self.current_time} {distance} {signal_strength}"
 
+    def measure_distance_continuous(self):
+        self.ser.write(Commands.CONTINUOUS)
+        while True:
+            data = self.ser.read(4).decode("ascii").strip()
+            self.publisher.publish(data)
+            print(data)
+
     def measure_distance(self) -> tuple[int, int]:
         """
         Measure the current distance with the laser sensor.
@@ -22,7 +38,7 @@ class LaserSensor(Sensor):
         Returns:
             tuple[int, int]: distance and signal strength respectively.
         """
-        self._send_distance_command()
+        self.ser.write(Commands.SINGLE_MEASURE)
         protocol = self._read_distance_protocol()
 
         if not self._is_valid_protocol(protocol):
@@ -32,12 +48,6 @@ class LaserSensor(Sensor):
         distance = self._get_distance_from_protocol(protocol)
         strength = self._get_strength_from_protocol(protocol)
         return distance, strength
-
-    def _send_distance_command(self) -> None:
-        """
-        Tell sensor to measure distance.
-        """
-        self.ser.write(b"\xaa\x00\x00\x20\x00\x01\x00\x02\x23")
 
     def _read_distance_protocol(self) -> list[int]:
         """
