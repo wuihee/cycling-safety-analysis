@@ -106,11 +106,12 @@ def get_laser_ascii_data(file_path: pathlib.Path) -> list[int]:
     data = []
     with open(file_path) as f:
         for line in f.readlines():
-            line = line.strip()
+            line = line.strip().split(" ")
             if line:
-                distance = line.split("]")[1]
+                timing = line[1].split(".")[0]
+                distance = line[2].split("]")[1]
                 if all(character.isdigit() for character in distance):
-                    data.append(int(distance))
+                    data.append((timing, int(distance)))
     return data
 
 
