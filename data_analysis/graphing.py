@@ -1,6 +1,7 @@
 import datetime
 
 import matplotlib as mpl
+import matplotlib.dates as mdates
 import numpy as np
 
 
@@ -126,7 +127,28 @@ class BasicGraphs:
 
 
 class OutdoorGraphs:
-    def set_info(self, ax: mpl.axes.Axes, title: str, xlabel: str, ylabel: str, legend=None) -> None:
+    def scatter_time_vs_distance(
+        self, ax: mpl.axes.Axes, timing: list[datetime.datetime], distances: list[int], title=""
+    ) -> None:
+        """
+        Plot a scatter plot of time against distance.
+
+        Args:
+            ax (mpl.axes.Axes): Matplotlib axes object.
+            timing (list[datetime.datetime]): List of timings for each distance measured.
+            distances (list[int]): List of distances measured by the sensor.
+            title (str, optional): Title of the graph. Defaults to "".
+        """
+        # Clean the null values from the distances data.
+        non_null_indices = self._get_non_null_indices(distances)
+        x = self._clean_null_values(timing, non_null_indices)
+        y = self._clean_null_values(distances, non_null_indices)
+
+        ax.scatter(x, y, s=12)
+        self._set_info(ax, title, "Time", "Distance (mm)")
+        self._format_time_xaxis(ax)
+
+    def _set_info(self, ax: mpl.axes.Axes, title: str, xlabel: str, ylabel: str, legend=None) -> None:
         """
         Set the information of a graph.
 
@@ -147,25 +169,16 @@ class OutdoorGraphs:
         if legend:
             ax.legend(legend)
 
-    def scatter_time_vs_distance(
-        self, ax: mpl.axes.Axes, timing: list[datetime.datetime], distances: list[int], title=""
-    ) -> None:
+    def _format_time_xaxis(self, ax: mpl.axes.Axes) -> None:
         """
-        Plot a scatter plot of time against distance.
+        Format the x-axis to display time in HH:MM:SS with intervals of 30s.
 
         Args:
             ax (mpl.axes.Axes): Matplotlib axes object.
-            timing (list[datetime.datetime]): List of timings for each distance measured.
-            distances (list[int]): List of distances measured by the sensor.
-            title (str, optional): Title of the graph. Defaults to "".
         """
-        # Clean the null values from the distances data.
-        non_null_indices = self._get_non_null_indices(distances)
-        x = self._clean_null_values(timing, non_null_indices)
-        y = self._clean_null_values(distances, non_null_indices)
-
-        ax.scatter(x, y, s=12)
-        self.set_info(ax, title, "Time", "Distance (mm)")
+        time_format = mdates.DateFormatter("%H:%M:%S")
+        ax.xaxis.set_major_formatter(time_format)
+        ax.xaxis.set_major_locator(mdates.SecondLocator(interval=30))
 
     def _get_non_null_indices(self, data: list[int], null_value=-1) -> list[int]:
         """
