@@ -44,9 +44,30 @@ I analyze the results of each test in a separate Jupyter Notebook.
 
 To have the sensors collect data while attached to a bike, I needed to attach them to a Raspberry Pi and run a script. Setting this up consisted of 3 parts:
 
-1. Communicating with the sensors via Python.
-2. Publishing the data collected to MQTT.
-3. Auto-starting the script on boot.
+1. Enabling Serial Port Settings.
+2. Communicating with the sensors via Python.
+3. Publishing the data collected to MQTT.
+4. Auto-starting the script on boot.
+
+#### Enabling Serial Port Settings
+
+- To begin using the sensors, I needed to first enable the Raspberry Pi's serial port settings to allow for communication with the sensors using the following command.
+
+    ```bash
+    sudo raspi-config
+    ```
+
+- Following the prompts:
+  - Would you like a login shell to be accessible over serial? &rarr; No
+  - Would you like serial port hardware to be enabled &rarr; Yes
+
+- Next, I opened the `/boot/config.txt` file and included the following configuration line to the end of the file.
+
+    ```text
+    enable_uart=1
+    ```
+
+- After this, I rebooted the computer.
 
 #### Communicating with the Sensors via Python
 
