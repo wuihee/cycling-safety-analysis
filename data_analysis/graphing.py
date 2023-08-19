@@ -5,7 +5,7 @@ import numpy as np
 
 
 class BasicGraphs:
-    def set_info(self, ax: mpl.axes.Axes, title: str, xlabel, ylabel, legend=None) -> None:
+    def set_info(self, ax: mpl.axes.Axes, title: str, xlabel: str, ylabel: str, legend=None) -> None:
         """
         Set the information of a graph.
 
@@ -126,10 +126,7 @@ class BasicGraphs:
 
 
 class OutdoorGraphs:
-    def __init__(self) -> None:
-        pass
-
-    def set_info(self, ax: mpl.axes.Axes, title: str, xlabel, ylabel, legend=None) -> None:
+    def set_info(self, ax: mpl.axes.Axes, title: str, xlabel: str, ylabel: str, legend=None) -> None:
         """
         Set the information of a graph.
 
@@ -145,11 +142,14 @@ class OutdoorGraphs:
         ax.set_title(title)
         ax.set_xlabel(xlabel)
         ax.set_ylabel(ylabel)
-        ax.set_yticks((0, 1000, 2000, 3000, 4000, 5000))
+        ax.set_yticks(range(0, 5500, 500))
+        ax.grid(color="#DEDEDE", linestyle="--", linewidth=1)
         if legend:
             ax.legend(legend)
 
-    def scatter_time_vs_distance(self, ax: mpl.axes.Axes, timing: list[datetime.datetime], distances: list[int], title="") -> None:
+    def scatter_time_vs_distance(
+        self, ax: mpl.axes.Axes, timing: list[datetime.datetime], distances: list[int], title=""
+    ) -> None:
         """
         Plot a scatter plot of time against distance.
 
