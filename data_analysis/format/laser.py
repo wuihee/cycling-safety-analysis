@@ -127,7 +127,7 @@ def _extract_ascii(line: str) -> int:
     """
     distance = line.split("]")[1]
     if _is_valid_distance(distance):
-        return int(distance) / 1000
+        return int(distance)
     return -1
 
 
