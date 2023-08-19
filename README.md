@@ -201,9 +201,13 @@ I definitely felt that at some points, this level of modularization was unnecess
 
 While creating my Jupyter Notebooks to display the data collected, I quickly ran into the problem of having my notebooks fill up with huge chunks of auxilliary code unrelated to the data analysis. As a result, I decided to split the auxilliary code into separate modules, and import them when needed. This kept the code in my Notebooks minimal and allowed the focus to remain on the data analysis. I will be describing the functions and challenges of each module.
 
+### [`format`](./data_analysis/format/)
+
+One of the biggest difficulties in keeping my code modular was dealing with the different ways the data collected was formatted. For instance, the code extracted from the WaveShare's software was found in an excel file, whereas when I used a Raspberry Pi, I had the data output to a text file. Therefore, I needed a fixed format in which the data was stored, so I could extract every file of data using the same function, instead of creating a new function for every new format. I created a module `format` that contianed auxilliary functions to format all data collected into a consistent format, and store them in a text file.
+
 #### [`format_data.py`](./data_analysis/format_data.py)
 
-One of the biggest difficulties in keeping my code modular was dealing with the different ways the data collected was formatted. For instance, the code extracted from the WaveShare's software was found in an excel file, whereas when I used a Raspberry Pi, I had the data output to a text file. Therefore, I needed a fixed format in which the data was stored, so I could extract every file of data using the same function, instead of creating a new function for every new format. The auxilliary functions in `format_data.py` would go through all the raw data, and format them to fit a specific format, and write them to new text files.
+I then imported the `format` module and used it to format the data I wanted in this script.
 
 #### [`data.py`](./data_analysis/data.py)
 
