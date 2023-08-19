@@ -22,12 +22,14 @@ TOF_OUTDOORS_RAW_DATA = pathlib.Path("./raw_data/tof_basic_tests/outdoors")
 TOF_WITH_SHADE_RAW_DATA = pathlib.Path("./raw_data/tof_basic_tests/with_shade")
 LASER_INDOORS_RAW_DATA = pathlib.Path("./raw_data/laser_basic_tests/indoors")
 LASER_OUTDOORS_RAW_DATA = pathlib.Path("./raw_data/laser_basic_tests/outdoors")
+LASER_CYCLING_TEST_RAW_DATA = pathlib.Path("./raw_data/laser_outdoor_tests/")
 
 TOF_INDOORS_DATA = pathlib.Path("./data/tof_basic_tests/indoors")
 TOF_OUTDOORS_DATA = pathlib.Path("./data/tof_basic_tests/outdoors")
 TOF_WITH_SHADE_DATA = pathlib.Path("./data/tof_basic_tests/with_shade")
 LASER_INDOORS_DATA = pathlib.Path("./data/laser_basic_tests/indoors")
 LASER_OUTDOORS_DATA = pathlib.Path("./data/laser_basic_tests/outdoors")
+LASER_CYCLING_TEST_DATA = pathlib.Path("./data/laser_outdoor_tests")
 
 
 def format_excel_data(source_folder: pathlib.Path, destination_folder: pathlib.Path) -> None:
@@ -70,6 +72,46 @@ def format_laser_protocol_data(source_folder: pathlib.Path, destination_folder: 
         file_name = get_file_name(file_path)
         data = get_laser_protocol_data(file_path)
         write_to_new_file(destination_folder, file_name, data)
+
+
+def get_laser_protocol_data(file_path: pathlib.Path) -> list[float]:
+    """
+    Helper function that formats a file of laser data collected by the
+    software.
+
+    Args:
+        file_path (pathlib.Path): Path to raw data file.
+
+    Returns:
+        list[float]: List of distance data.
+    """
+    data = []
+    with open(file_path) as f:
+        for line in f.readlines():
+            protocol = line.split("]")[1].split(" ")
+            distance_data = "".join(protocol[7:10])
+            distance = round(int(distance_data, base=16) / 1000, 2)
+            data.append(distance)
+    return data
+
+
+def format_laser_ascii_data(source_folder: pathlib.Path, destination_folder: pathlib.Path) -> None:
+    for file_path in source_folder.iterdir():
+        file_name = get_file_name(file_path)
+        data = get_laser_ascii_data(file_path)
+        write_to_new_file(destination_folder, file_name, data)
+
+
+def get_laser_ascii_data(file_path: pathlib.Path) -> list[int]:
+    data = []
+    with open(file_path) as f:
+        for line in f.readlines():
+            line = line.strip()
+            if line:
+                distance = line.split("]")[1]
+                if all(character.isdigit() for character in distance):
+                    data.append(int(distance))
+    return data
 
 
 def get_file_name(file_path: pathlib.Path) -> str:
@@ -122,30 +164,10 @@ def get_raspberry_pi_data(file_path: pathlib.Path) -> list[float]:
     return data
 
 
-def get_laser_protocol_data(file_path: pathlib.Path) -> list[float]:
-    """
-    Helper function that formats a file of laser data collected by the
-    software.
-
-    Args:
-        file_path (pathlib.Path): Path to raw data file.
-
-    Returns:
-        list[float]: List of distance data.
-    """
-    data = []
-    with open(file_path) as f:
-        for line in f.readlines():
-            protocol = line.split("]")[1].split(" ")
-            distance_data = "".join(protocol[7:10])
-            distance = round(int(distance_data, base=16) / 1000, 2)
-            data.append(distance)
-    return data
-
-
 if __name__ == "__main__":
     format_excel_data(TOF_INDOORS_RAW_DATA, TOF_INDOORS_DATA)
     format_excel_data(TOF_OUTDOORS_RAW_DATA, TOF_OUTDOORS_DATA)
     format_raspberry_pi_data(TOF_WITH_SHADE_RAW_DATA, TOF_WITH_SHADE_DATA)
     format_laser_protocol_data(LASER_INDOORS_RAW_DATA, LASER_INDOORS_DATA)
     format_raspberry_pi_data(LASER_OUTDOORS_RAW_DATA, LASER_OUTDOORS_DATA)
+    format_laser_ascii_data(LASER_CYCLING_TEST_RAW_DATA, LASER_CYCLING_TEST_DATA)
