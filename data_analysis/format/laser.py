@@ -68,11 +68,25 @@ def _get_ascii_data(file_path: pathlib.Path) -> list[float]:
     with open(file_path) as f:
         for line in f.readlines():
             line = line.strip()
-            if line:
+            if _is_valid_line(line):
                 timing = _extract_time(line)
                 distance = _extract_ascii(line)
                 data.append((timing, float(distance), -1))
     return data
+
+
+def _is_valid_line(line: str) -> bool:
+    """
+    Return if the line is in a valid format. Currently the test is a little
+    simplistic. I will improve on it if needed.
+
+    Args:
+        line (str): The line of data recorded by the laser software.
+
+    Returns:
+        bool: True if the line is in a standard format containing useful data.
+    """
+    return "]" in line
 
 
 def _extract_time(line: str) -> str:
