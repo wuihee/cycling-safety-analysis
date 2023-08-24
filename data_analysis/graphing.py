@@ -144,7 +144,7 @@ class OutdoorGraphs:
         x = self._clean_null_values(timing, non_null_indices)
         y = self._clean_null_values(distances, non_null_indices)
 
-        ax.scatter(x, y, s=12)
+        ax.scatter(x, y, s=20, alpha=0.2)
         self._set_info(ax, title, "Time", "Distance (mm)")
         self._format_time_xaxis(ax)
 
