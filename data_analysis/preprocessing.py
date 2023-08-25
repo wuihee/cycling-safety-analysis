@@ -60,13 +60,13 @@ class DataCleaner:
             if distance == -1:
                 continue
 
-            neighbors = self.get_neighbors(cleaned_data, i)
+            neighbors = self._get_neighbors(cleaned_data, i)
             if len(neighbors) <= 1:
                 cleaned_data[i] = -1
 
         return cleaned_data
 
-    def get_neighbors(self, data: list[int], index: int, window=2) -> list[int]:
+    def _get_neighbors(self, data: list[int], index: int, window=2) -> list[int]:
         """
         Get all non -1 neighbors of the point at index within left and right window.
 

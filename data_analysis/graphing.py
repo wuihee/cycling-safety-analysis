@@ -6,27 +6,6 @@ import numpy as np
 
 
 class BasicGraphs:
-    def set_info(self, ax: mpl.axes.Axes, title: str, xlabel: str, ylabel: str, legend=None) -> None:
-        """
-        Set the information of a graph.
-
-        Args:
-            ax (mpl.Axes.axes): Matplotlib axes object.
-            title (str): Title of graph.
-            xlabel (str): Title of x label.
-            ylabel (str): Title of y label.
-            xticks (list): x axis tick values.
-            yticks (list): y axis tick values.
-            legend (list): Graph legend.
-        """
-        ax.set_title(title)
-        ax.set_xlabel(xlabel)
-        ax.set_ylabel(ylabel)
-        ax.set_xticks(self.intervals)
-        ax.set_yticks(self.intervals)
-        if legend:
-            ax.legend(legend)
-
     def __init__(self) -> None:
         self.intervals = [0.5 * i for i in range(1, 11)]
 
@@ -42,7 +21,7 @@ class BasicGraphs:
         """
         ax.plot(self.intervals, mean)
         ax.plot(self.intervals, self.intervals, color="red", linestyle="--")
-        self.set_info(ax, title, "Actual Distance (m)", "Measured Mean (m)", legend=["TOF Sensor", "Actual Distance"])
+        self._set_info(ax, title, "Actual Distance (m)", "Measured Mean (m)", legend=["TOF Sensor", "Actual Distance"])
 
     def plot_scatter(self, ax: mpl.axes.Axes, data: list[list], title="") -> None:
         """
@@ -54,9 +33,9 @@ class BasicGraphs:
                                distance interval.
             title (str, optional): Title of graph. Defaults to "".
         """
-        x, y = self.flatten(data)
+        x, y = self._flatten(data)
         ax.scatter(x, y, s=12, color="steelblue")
-        self.set_info(ax, title, "Actual Distance (m)", "Measured Points (m)")
+        self._set_info(ax, title, "Actual Distance (m)", "Measured Points (m)")
 
     def plot_std_errorbar(self, ax: mpl.axes.Axes, mean: list, std: list, title="") -> None:
         """
@@ -71,7 +50,7 @@ class BasicGraphs:
             title (str, optional): Title of graph. Defaults to "".
         """
         ax.errorbar(self.intervals, mean, yerr=std, fmt="o", linestyle="", ecolor="red", capsize=2)
-        self.set_info(ax, title, "Actual Distance (m)", "Measured Points (m)")
+        self._set_info(ax, title, "Actual Distance (m)", "Measured Points (m)")
 
     def plot_best_fit_scatter(self, ax: mpl.axes.Axes, data: list[list], title="") -> None:
         """
@@ -83,7 +62,7 @@ class BasicGraphs:
                                distance interval.
             title (str, optional): Title of graph. Defaults to "".
         """
-        x, y = self.flatten(data)
+        x, y = self._flatten(data)
         self.plot_scatter(ax, data, title=title)
         self.plot_line(ax, x, y)
         ax.plot(self.intervals, self.intervals, color="red", linestyle="--", label="y = x")
@@ -104,7 +83,28 @@ class BasicGraphs:
         equation = f"y = {m:.2f}x + {b:.2f}"
         ax.plot(x, best_fit(x), color="green", linestyle="--", label=equation)
 
-    def flatten(self, data: list[list]) -> tuple[list]:
+    def _set_info(self, ax: mpl.axes.Axes, title: str, xlabel: str, ylabel: str, legend=None) -> None:
+        """
+        Set the information of a graph.
+
+        Args:
+            ax (mpl.Axes.axes): Matplotlib axes object.
+            title (str): Title of graph.
+            xlabel (str): Title of x label.
+            ylabel (str): Title of y label.
+            xticks (list): x axis tick values.
+            yticks (list): y axis tick values.
+            legend (list): Graph legend.
+        """
+        ax.set_title(title)
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+        ax.set_xticks(self.intervals)
+        ax.set_yticks(self.intervals)
+        if legend:
+            ax.legend(legend)
+
+    def _flatten(self, data: list[list]) -> tuple[list]:
         """
         Return a list of x and y points of TOF sensor measurements and respective distant
         intervals.
@@ -128,25 +128,51 @@ class BasicGraphs:
 
 class OutdoorGraphs:
     def scatter_time_vs_distance(
-        self, ax: mpl.axes.Axes, timing: list[datetime.datetime], distances: list[int], title=""
+        self, ax: mpl.axes.Axes, timings: list[datetime.datetime], distances: list[int], title=""
     ) -> None:
         """
         Plot a scatter plot of time against distance.
 
         Args:
             ax (mpl.axes.Axes): Matplotlib axes object.
-            timing (list[datetime.datetime]): List of timings for each distance measured.
+            timings (list[datetime.datetime]): List of timings for each distance measured.
             distances (list[int]): List of distances measured by the sensor.
             title (str, optional): Title of the graph. Defaults to "".
         """
         # Clean the null values from the distances data.
         non_null_indices = self._get_non_null_indices(distances)
-        x = self._clean_null_values(timing, non_null_indices)
+        x = self._clean_null_values(timings, non_null_indices)
         y = self._clean_null_values(distances, non_null_indices)
 
         ax.scatter(x, y, s=20, alpha=0.2)
         self._set_info(ax, title, "Time", "Distance (mm)")
         self._format_time_xaxis(ax)
+
+    def scatter_average_clusters(
+        self, ax: mpl.axes.Axes, timings: list[datetime.datetime], distances: list[int], title=""
+    ) -> None:
+        non_null_indices = self._get_non_null_indices(distances)
+        x = self._clean_null_values(timings, non_null_indices)
+        y = self._clean_null_values(self._get_average_clusters(distances), non_null_indices)
+
+        ax.scatter(x, y, s=20, alpha=0.2)
+        self._set_info(ax, title, "Time", "Distance (mm)")
+        self._format_time_xaxis(ax)
+
+    def _get_average_clusters(ax, distances):
+        new_distances = distances.copy()
+        i = 0
+        while i < len(distances):
+            if distances[i] != -1:
+                j = i
+                while distances[j] != -1:
+                    j += 1
+                mean = np.mean([distances[k] for k in range(i, j)])
+                for k in range(i, j):
+                    new_distances[k] = mean
+                i = j
+            i += 1
+        return new_distances
 
     def _set_info(self, ax: mpl.axes.Axes, title: str, xlabel: str, ylabel: str, legend=None) -> None:
         """
