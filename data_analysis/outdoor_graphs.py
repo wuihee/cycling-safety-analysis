@@ -1,5 +1,7 @@
+import pathlib
 from datetime import datetime
 
+import cv2
 import matplotlib as mpl
 import matplotlib.dates as mdates
 
@@ -12,6 +14,19 @@ def scatter_time_vs_distance(
     intervals=30,
     rotate_xticks=False,
 ) -> None:
+    """
+    Plot a time vs distance scatter graph.
+
+    Args:
+        ax (mpl.axes.Axes): Axes object to plot graph on.
+        x (list[datetime]): x-values which are datetime objects.
+        y (list[int]): y-values representing distances.
+        title (str, optional): Title of graph. Defaults to "".
+        intervals (int, optional): Time intervals between xticks. Defaults to
+                                   30.
+        rotate_xticks (bool, optional): Set to true to rotate xticks to make
+                                        more space. Defaults to False.
+    """
     x, y = _clean_null_values(x, y)
     ax.scatter(x, y, s=20, alpha=0.2)
     _set_info(ax, title, "Time", "Distance (mm)")
@@ -19,6 +34,12 @@ def scatter_time_vs_distance(
     _format_xaxis(ax)
     if rotate_xticks:
         _rotate_xticks(ax)
+
+
+def show_img(ax: mpl.axes.Axes, path: pathlib.Path) -> None:
+    img = cv2.imread(path)
+    img_resized = cv2.resize(img, (224, 224), interpolation=cv2.INTER_LINEAR)
+    ax.imshow(cv2.cvtColor(img_resized, cv2.COLOR_BGR2RGB))
 
 
 def _clean_null_values(x: list, y: list, null_value=-1) -> tuple[int]:
