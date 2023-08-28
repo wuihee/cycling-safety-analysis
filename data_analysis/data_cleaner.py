@@ -79,6 +79,43 @@ def fliter_above(data: list[int], threshold: int) -> list[int]:
     return [i if i < threshold else -1 for i in data]
 
 
+def average_clusters(distances: list) -> list:
+    """
+    Given a list of distance measurements, a cluster is a contiguous subarray
+    of non-null points. Average the values of all clusters.
+
+    Args:
+        distances (list): List of distance measurements by the sensor.
+
+    Returns:
+        list: A list of equal length with the distance of clusters averaged.
+    """
+    new_distances = distances.copy()
+    i = 0
+
+    # Loop through distances.
+    while i < len(distances):
+        # If cluster is encountered, iterate until the end of the cluster.
+        if distances[i] != -1:
+            j = i
+            while j < len(distances) - 1 and distances[j] != -1:
+                j += 1
+
+            # Find the mean of the cluster.
+            mean = np.mean([distances[k] for k in range(i, j)])
+
+            # Replace values in the cluster with the mean.
+            for k in range(i, j):
+                new_distances[k] = mean
+
+            # Move pointer i to the end of the cluster.
+            i = j
+
+        i += 1
+
+    return new_distances
+
+
 def _get_neighbors(data: list[int], index: int, window=2) -> list[int]:
     """
     Get all non -1 neighbors of the point at index within left and right window.
