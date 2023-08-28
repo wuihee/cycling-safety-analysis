@@ -1,7 +1,8 @@
 awscrt
 awsiotsdk
-paho-mqtt
 matplotlib
 numpy
+opencv-python
+paho-mqtt
 pandas
 pyserial
