@@ -1,7 +1,5 @@
-import pathlib
 from datetime import datetime
 
-import cv2
 import matplotlib as mpl
 import matplotlib.dates as mdates
 
@@ -36,12 +34,6 @@ def scatter_time_vs_distance(
         _rotate_xticks(ax)
 
 
-def show_img(ax: mpl.axes.Axes, path: pathlib.Path) -> None:
-    img = cv2.imread(path)
-    img_resized = cv2.resize(img, (224, 224), interpolation=cv2.INTER_LINEAR)
-    ax.imshow(cv2.cvtColor(img_resized, cv2.COLOR_BGR2RGB))
-
-
 def _clean_null_values(x: list, y: list, null_value=-1) -> tuple[int]:
     """
     Return the data containing all points that are not null. Used to plot a
@@ -61,9 +53,7 @@ def _clean_null_values(x: list, y: list, null_value=-1) -> tuple[int]:
     return x, y
 
 
-def _set_info(
-    ax: mpl.axes.Axes, title: str, xlabel: str, ylabel: str, legend=None
-) -> None:
+def _set_info(ax: mpl.axes.Axes, title: str, xlabel: str, ylabel: str, legend=None) -> None:
     """
     Set the information of a graph.
 
