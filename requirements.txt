@@ -1,5 +1,6 @@
 awscrt
 awsiotsdk
+ipympl
 matplotlib
 numpy
 opencv-python
