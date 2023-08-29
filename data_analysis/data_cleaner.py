@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def clean_spurious_data(data: list[int]) -> list[int]:
+def clean_tof_data(data: list[int]) -> list[int]:
     """
     Attempt to remove spurious data by removing standalone points.
 
@@ -77,6 +77,17 @@ def fliter_above(data: list[int], threshold: int) -> list[int]:
         list[int]: Distance data but all points above threshold now -1.
     """
     return [i if i < threshold else -1 for i in data]
+
+
+def clean_laser_data(data: list[int]) -> list:
+    cleaned_data = data.copy()
+
+    # Merge clusters which are within 2 seconds of each other.
+
+    # Average the values of clusters.
+    cleaned_data = average_clusters(cleaned_data)
+
+    return cleaned_data
 
 
 def average_clusters(distances: list) -> list:
