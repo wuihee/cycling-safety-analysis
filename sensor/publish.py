@@ -40,7 +40,9 @@ class Publisher:
         if self.resolve_future_connection(future_connection):
             return mqtt_connection
 
-    def resolve_future_connection(self, future_connection: concurrent.futures.Future) -> bool:
+    def resolve_future_connection(
+        self, future_connection: concurrent.futures.Future
+    ) -> bool:
         """
         Resolve a future connection object.
 
@@ -66,7 +68,11 @@ class Publisher:
         Args:
             (str) message: Message to be published.
         """
-        self.mqtt_connection.publish(topic=AWSConstants.TOPIC, payload=json.dumps(message), qos=mqtt.QoS.AT_LEAST_ONCE)
+        self.mqtt_connection.publish(
+            topic=AWSConstants.TOPIC,
+            payload=json.dumps(message),
+            qos=mqtt.QoS.AT_LEAST_ONCE,
+        )
 
     def disconnect(self) -> None:
         """
