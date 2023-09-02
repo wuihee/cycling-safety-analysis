@@ -1,7 +1,0 @@
-/usr/lib/systemd/system
-
-sudo systemctl daemon-reload
-
-sudo systemctl disable SERVICE_NAME.service
-
-sudo systemctl enable SERVICE_NAME.service

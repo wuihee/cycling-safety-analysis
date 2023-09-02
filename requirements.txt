@@ -1,8 +1,4 @@
-awscrt
-awsiotsdk
 ipympl
 matplotlib
 numpy
-paho-mqtt
 pandas
-pyserial
