@@ -41,7 +41,9 @@ laser.format_ascii_data(
 # Formatting LIDAR Basic Tests
 LIDAR_BASE_RAW = BASE_RAW_DATA / "lidar_basic_tests"
 LIDAR_BASE_DATA = BASE_DATA / "lidar_basic_tests"
-lidar_in_raw_pairs = [(LIDAR_BASE_RAW / "indoors", LIDAR_BASE_DATA / "indoors")]
+lidar_in_raw_pairs = [
+    (LIDAR_BASE_RAW / "indoors", LIDAR_BASE_DATA / "indoors"),
+    (LIDAR_BASE_RAW / "outdoors", LIDAR_BASE_DATA / "outdoors"),
+]
 for raw, data in lidar_in_raw_pairs:
-    if "indoors" in str(raw):
-        tof.format_text(raw, data)
+    tof.format_text(raw, data)

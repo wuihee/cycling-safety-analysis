@@ -16,7 +16,13 @@ def plot_mean_vs_actual_distance(ax: mpl.axes.Axes, mean: list, title="") -> Non
     """
     ax.plot(INTERVALS, mean)
     ax.plot(INTERVALS, INTERVALS, color="red", linestyle="--")
-    _set_info(ax, title, "Actual Distance (m)", "Measured Mean (m)", legend=["TOF Sensor", "Actual Distance"])
+    _set_info(
+        ax,
+        title,
+        "Actual Distance (m)",
+        "Measured Mean (m)",
+        legend=["TOF Sensor", "Actual Distance"],
+    )
 
 
 def plot_scatter(ax: mpl.axes.Axes, data: list[list], title="") -> None:
@@ -30,7 +36,7 @@ def plot_scatter(ax: mpl.axes.Axes, data: list[list], title="") -> None:
         title (str, optional): Title of graph. Defaults to "".
     """
     x, y = _flatten(data)
-    ax.scatter(x, y, s=12, color="steelblue")
+    ax.scatter(x, y, s=12, color="steelblue", alpha=0.2)
     _set_info(ax, title, "Actual Distance (m)", "Measured Points (m)")
 
 
@@ -46,7 +52,9 @@ def plot_std_errorbar(ax: mpl.axes.Axes, mean: list, std: list, title="") -> Non
                     at the ith distance interval.
         title (str, optional): Title of graph. Defaults to "".
     """
-    ax.errorbar(INTERVALS, mean, yerr=std, fmt="o", linestyle="", ecolor="red", capsize=2)
+    ax.errorbar(
+        INTERVALS, mean, yerr=std, fmt="o", linestyle="", ecolor="red", capsize=2
+    )
     _set_info(ax, title, "Actual Distance (m)", "Measured Points (m)")
 
 
@@ -83,7 +91,9 @@ def plot_line(ax: mpl.axes.Axes, x: list, y: list) -> None:
     ax.plot(x, best_fit(x), color="green", linestyle="--", label=equation)
 
 
-def _set_info(ax: mpl.axes.Axes, title: str, xlabel: str, ylabel: str, legend=None) -> None:
+def _set_info(
+    ax: mpl.axes.Axes, title: str, xlabel: str, ylabel: str, legend=None
+) -> None:
     """
     Set the information of a graph.
 
