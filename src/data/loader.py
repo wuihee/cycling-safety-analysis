@@ -1,6 +1,8 @@
 import datetime
 import pathlib
 
+from . import cleaner
+
 
 class FolderData:
     def __init__(self, folder_path: pathlib.Path) -> None:
@@ -20,7 +22,9 @@ class FolderData:
         """
         Load data from each files into the respective attributes.
         """
-        self.timings, self.distances, self.signal_strengths = load_data_from_folder(self.folder_path)
+        self.timings, self.distances, self.signal_strengths = load_data_from_folder(
+            self.folder_path
+        )
 
 
 def load_data_from_folder(folder_path: pathlib.Path) -> list[list[list]]:
@@ -40,6 +44,21 @@ def load_data_from_folder(folder_path: pathlib.Path) -> list[list[list]]:
         data.append((timing, distance, signal_strength))
 
     return [list(i) for i in zip(*data)]
+
+
+def filter_data_from_file(file_path: pathlib.Path) -> tuple[list]:
+    """
+    Helper function that extracts data from file.
+
+    Args:
+        file_path (pathlib.Path): Data file.
+
+    Returns:
+        tuple[list]: Returns timings, distances, and signal strengths.
+    """
+    timings, distances, strengths = load_data_from_file(file_path)
+    distances = cleaner.fliter_above(distances, 3500)
+    return timings, distances, strengths
 
 
 def load_data_from_file(file_path: pathlib.Path, clean=True) -> list[list]:
