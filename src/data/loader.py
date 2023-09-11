@@ -46,7 +46,7 @@ def load_data_from_folder(folder_path: pathlib.Path) -> list[list[list]]:
     return [list(i) for i in zip(*data)]
 
 
-def filter_data_from_file(file_path: pathlib.Path) -> tuple[list]:
+def filter_data_from_file(file_path: pathlib.Path, threshold=3500) -> tuple[list]:
     """
     Helper function that extracts data from file.
 
@@ -57,7 +57,7 @@ def filter_data_from_file(file_path: pathlib.Path) -> tuple[list]:
         tuple[list]: Returns timings, distances, and signal strengths.
     """
     timings, distances, strengths = load_data_from_file(file_path)
-    distances = cleaner.fliter_above(distances, 3500)
+    distances = cleaner.fliter_above(distances, threshold)
     return timings, distances, strengths
 
 
