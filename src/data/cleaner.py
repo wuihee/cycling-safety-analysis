@@ -65,18 +65,19 @@ def clean_std(data: list) -> list:
     return cleaned_array
 
 
-def fliter_above(data: list[int], threshold: int) -> list[int]:
+def filter(data: list[int], high: int, low=0) -> list[int]:
     """
     Filter all points above the given threshold.
 
     Args:
         data (list[int]): List of distances.
-        threshold (int): Threshold to filter.
+        high (int): No data above high.
+        low (int): No data below low.
 
     Returns:
         list[int]: Distance data but all points above threshold now -1.
     """
-    return [i if i < threshold else -1 for i in data]
+    return [i if low < i < high else -1 for i in data]
 
 
 def clean_laser_data(data: list[int]) -> list:
