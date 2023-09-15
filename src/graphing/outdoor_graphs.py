@@ -90,15 +90,28 @@ def scatter_clusters_with_dbscan(
 
 
 def interactive_scatter(
-    fig,
+    fig: mpl.figure.Figure,
     ax_1: mpl.axes.Axes,
-    ax_2,
-    images: pathlib.Path,
+    ax_2: mpl.axes.Axes,
+    images: list[pathlib.Path],
     x: list[datetime],
     y: list[int],
     title="",
     **kwargs,
 ) -> None:
+    """
+    Plot an interactive scatter where the user can see each image associated
+    with each point on the scatter.
+
+    Args:
+        fig (mpl.figure.Figure): Matplot
+        ax_1 (mpl.axes.Axes): Axes to plot scatter.
+        ax_2 (_type_): Axes to print image on.
+        images (list[pathlib.Path]): List of image paths.
+        x (list[datetime]): _description_
+        y (list[int]): _description_
+        title (str, optional): _description_. Defaults to "".
+    """
     ax_1.scatter(x, y, picker=True, **kwargs)
     _set_info(ax_1, title, ylow=1000, yhigh=2500)
     _format_xaxis(ax_1)
@@ -133,7 +146,7 @@ def _set_info(ax: mpl.axes.Axes, title: str, ylow=0, yhigh=5500, legend=None) ->
         ax (mpl.Axes.axes): Matplotlib axes object.
         title (str): Title of graph.
         ylow (int): Lower bound of y-axis.
-        yhigh (int): Upper bound o y-axis
+        yhigh (int): Upper bound of y-axis
         xticks (list): x axis tick values.
         yticks (list): y axis tick values.
         legend (list): Graph legend.
@@ -165,10 +178,25 @@ def _format_xaxis(ax: mpl.axes.Axes) -> None:
 
 
 def _rotate_xticks(ax: mpl.axes.Axes) -> None:
+    """
+    Rotate the xticks 45 degrees.
+
+    Args:
+        ax (mpl.axes.Axes): Matplotlib axes object.
+    """
     ax.tick_params(axis="x", labelrotation=45)
 
 
 def _on_pick(event, ax, images, distances):
+    """
+    Callback function for interactive plot.
+
+    Args:
+        event (_type_): _description_
+        ax (_type_): _description_
+        images (_type_): _description_
+        distances (_type_): _description_
+    """
     ax.clear()
     ax.axis("off")
     i = event.ind[0]
