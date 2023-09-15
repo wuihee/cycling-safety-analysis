@@ -32,7 +32,7 @@ Analysis and conclusions of the vehicle-to-cyclist passing distance data collect
 
 - [TOF Sensor](./notebooks/TOF_Basic_Tests.ipynb)
 - [Laser Sensor](./notebooks/Laser_Outdoor_Tests.ipynb)
-- [LIDAR Sensor](./notebooks/Laser_Outdoor_Tests.ipynb)
+- [LIDAR Sensor](./notebooks/LIDAR_Outdoor_Tests.ipynb)
 
 ## Installation
 
