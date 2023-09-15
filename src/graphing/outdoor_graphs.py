@@ -1,7 +1,11 @@
+import pathlib
 from datetime import datetime
 
 import matplotlib as mpl
 import matplotlib.dates as mdates
+import pandas as pd
+
+from data import analysis, processing
 
 
 def scatter_time_vs_distance(
@@ -11,6 +15,8 @@ def scatter_time_vs_distance(
     title="",
     intervals=30,
     rotate_xticks=False,
+    alpha=0.2,
+    **kwargs,
 ) -> None:
     """
     Plot a time vs distance scatter graph.
@@ -26,12 +32,70 @@ def scatter_time_vs_distance(
                                         more space. Defaults to False.
     """
     x, y = _clean_null_values(x, y)
-    ax.scatter(x, y, s=20, alpha=0.2)
+    ax.scatter(x, y, s=20, alpha=alpha, **kwargs)
     _set_info(ax, title, "Time", "Distance (mm)")
     _set_xtick_intervals(ax, intervals)
     _format_xaxis(ax)
     if rotate_xticks:
         _rotate_xticks(ax)
+
+
+def scatter_clusters_with_dbscan(
+    ax: mpl.axes.Axes,
+    x: list[datetime],
+    y: list[int],
+    title="",
+    intervals=30,
+    rotate_xticks=False,
+) -> None:
+    """
+    Plot a scatter with circles drawn around clusters identified by DBSCAN.
+
+    Args:
+        ax (mpl.axes.Axes): Axes object to plot graph on.
+        x (list[datetime]): x-values which are datetime objects.
+        y (list[int]): y-values representing distances.
+        title (str, optional): Title of graph. Defaults to "".
+        intervals (int, optional): Time intervals between xticks. Defaults to
+                                   30.
+        rotate_xticks (bool, optional): Set to true to rotate xticks to make
+                                        more space. Defaults to False.
+    """
+    x, y = _clean_null_values(x, y)
+    timestamps = processing.datetime_to_timestamps(x)
+
+    df = pd.DataFrame({"datetime": x, "distance": y, "timestamp": timestamps})
+    clusters = analysis.find_clusters_DBSCAN(timestamps, y)
+    df["clusters"] = clusters
+
+    scatter_time_vs_distance(
+        ax,
+        x,
+        y,
+        title=title,
+        intervals=intervals,
+        rotate_xticks=rotate_xticks,
+        c=clusters,
+        edgecolors="k",
+    )
+
+    for cluster_id in [c for c in df["clusters"].unique() if c != -1]:
+        cluster_data = df[df["clusters"] == cluster_id]
+        centroid_x = cluster_data["datetime"].mean()
+        centroid_y = cluster_data["distance"].mean()
+        ax.plot(centroid_x, centroid_y, "bo", fillstyle="none", markersize=20)
+
+
+def interactive_scatter(
+    ax: mpl.axes.Axes,
+    images: pathlib.Path,
+    x: list[datetime],
+    y: list[int],
+    title="",
+    **kwargs,
+) -> None:
+    ax.scatter(x, y, picker=True, **kwargs)
+    _set_info(ax, title, "Time", "Distance (mm)")
 
 
 def _clean_null_values(x: list, y: list, null_value=-1) -> tuple[int]:
@@ -53,7 +117,9 @@ def _clean_null_values(x: list, y: list, null_value=-1) -> tuple[int]:
     return x, y
 
 
-def _set_info(ax: mpl.axes.Axes, title: str, xlabel: str, ylabel: str, legend=None) -> None:
+def _set_info(
+    ax: mpl.axes.Axes, title: str, xlabel: str, ylabel: str, legend=None
+) -> None:
     """
     Set the information of a graph.
 

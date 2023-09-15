@@ -96,4 +96,6 @@ def load_data_from_file(file_path: pathlib.Path, clean=True) -> list[list]:
 def _format_timing(timing: str) -> datetime.datetime:
     if timing == "-1":
         return "-1"
-    return datetime.datetime.strptime(timing, "%H:%M:%S")
+    dt = datetime.datetime.strptime(timing, "%H:%M:%S")
+    dt.replace(year=2023)
+    return dt

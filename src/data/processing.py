@@ -1,3 +1,5 @@
+import datetime
+
 import numpy as np
 
 
@@ -25,3 +27,16 @@ def get_std(data: list) -> list[float]:
         list[float]: Return an array containing the standard deviation of the points at each interval.
     """
     return [round(np.std(i), 2) for i in data]
+
+
+def datetime_to_timestamps(data: list[datetime.datetime]) -> list[int]:
+    """
+    Convert a list of datetime objects to integer representation.
+
+    Args:
+        data (list[datetime.datetime]): datetime data.
+
+    Returns:
+        list[int]: List of integers representing datetime objects.
+    """
+    return [int(dt.timestamp()) for dt in data]
