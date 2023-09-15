@@ -3,7 +3,10 @@ from datetime import datetime
 
 import matplotlib as mpl
 import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
+from PIL import Image
 
 from data import analysis, processing
 
@@ -33,7 +36,7 @@ def scatter_time_vs_distance(
     """
     x, y = _clean_null_values(x, y)
     ax.scatter(x, y, s=20, alpha=alpha, **kwargs)
-    _set_info(ax, title, "Time", "Distance (mm)")
+    _set_info(ax, title)
     _set_xtick_intervals(ax, intervals)
     _format_xaxis(ax)
     if rotate_xticks:
@@ -87,15 +90,20 @@ def scatter_clusters_with_dbscan(
 
 
 def interactive_scatter(
-    ax: mpl.axes.Axes,
+    fig,
+    ax_1: mpl.axes.Axes,
+    ax_2,
     images: pathlib.Path,
     x: list[datetime],
     y: list[int],
     title="",
     **kwargs,
 ) -> None:
-    ax.scatter(x, y, picker=True, **kwargs)
-    _set_info(ax, title, "Time", "Distance (mm)")
+    ax_1.scatter(x, y, picker=True, **kwargs)
+    _set_info(ax_1, title, ylow=1000, yhigh=2500)
+    _format_xaxis(ax_1)
+    fig.canvas.mpl_connect("pick_event", lambda event: _on_pick(event, ax_2, images, y))
+    ax_2.axis("off")
 
 
 def _clean_null_values(x: list, y: list, null_value=-1) -> tuple[int]:
@@ -117,25 +125,23 @@ def _clean_null_values(x: list, y: list, null_value=-1) -> tuple[int]:
     return x, y
 
 
-def _set_info(
-    ax: mpl.axes.Axes, title: str, xlabel: str, ylabel: str, legend=None
-) -> None:
+def _set_info(ax: mpl.axes.Axes, title: str, ylow=0, yhigh=5500, legend=None) -> None:
     """
     Set the information of a graph.
 
     Args:
         ax (mpl.Axes.axes): Matplotlib axes object.
         title (str): Title of graph.
-        xlabel (str): Title of x label.
-        ylabel (str): Title of y label.
+        ylow (int): Lower bound of y-axis.
+        yhigh (int): Upper bound o y-axis
         xticks (list): x axis tick values.
         yticks (list): y axis tick values.
         legend (list): Graph legend.
     """
     ax.set_title(title)
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel(ylabel)
-    ax.set_yticks(range(0, 5500, 500))
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Distance (mm)")
+    ax.set_yticks(range(ylow, yhigh, 500))
     ax.grid(color="#DEDEDE", linestyle="--", linewidth=1)
     if legend:
         ax.legend(legend)
@@ -160,3 +166,24 @@ def _format_xaxis(ax: mpl.axes.Axes) -> None:
 
 def _rotate_xticks(ax: mpl.axes.Axes) -> None:
     ax.tick_params(axis="x", labelrotation=45)
+
+
+def _on_pick(event, ax, images, distances):
+    ax.clear()
+    ax.axis("off")
+    i = event.ind[0]
+    img = np.asarray(Image.open(images[i]))
+    ax.imshow(img)
+    ax.text(
+        0.5,
+        0.5,
+        f"Passing Distance: {distances[i] / 1000:.2f}m",
+        color="white",
+        fontsize=12,
+        ha="center",
+        va="center",
+        bbox=dict(
+            boxstyle="round,pad=0.3", facecolor="black", edgecolor="white", alpha=0.6
+        ),
+    )
+    plt.draw()
