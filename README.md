@@ -30,9 +30,9 @@ The results and analysis of each sensor's baseline capabilities in a static envi
 
 Analysis and conclusions of the vehicle-to-cyclist passing distance data collected by each sensor.
 
-- [TOF Sensor](./notebooks/TOF_Basic_Tests.ipynb)
-- [Laser Sensor](./notebooks/Laser_Outdoor_Tests.ipynb)
-- [LIDAR Sensor](./notebooks/LIDAR_Outdoor_Tests.ipynb)
+- [TOF Sensor](./notebooks/TOF_Basic_Tests.ipynb): TOF sensor unreliable due to high amount of spurious data generated.
+- [Laser Sensor](./notebooks/Laser_Outdoor_Tests.ipynb): Laser sensor too slow if not used with windows software.
+- [LIDAR Sensor](./notebooks/LIDAR_Outdoor_Tests.ipynb): Successful automated data collection with AI camera! Also showcases sample automated data analysis with DBSCAN cluster identification.
 
 ## Installation
 
