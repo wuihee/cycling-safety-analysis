@@ -16,6 +16,22 @@ In Singapore, in the face of bicycle related traffic accidents, traffic rules re
 
 The goal of this project is to collect data on the passing distance of cars to bicycles. I use various sensors to measure the distance of passing vehicles. The sensors were mounted a bike which was used to ride around Singapore roads and collect data.
 
+## Installation
+
+First clone the repository by running:
+
+```bash
+git clone https://github.com/wuihee/Traffic-Data-Collection.git
+```
+
+To run the notebooks, install the dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+The setup and code used to run the sensors can be found in my [`traffic-data-sensors`](https://github.com/wuihee/traffic-data-sensors) module.
+
 ## Notebooks
 
 ### Basic Tests
@@ -34,12 +50,6 @@ Analysis and conclusions of the vehicle-to-cyclist passing distance data collect
 - [Laser Sensor](./notebooks/Laser_Outdoor_Tests.ipynb): Laser sensor too slow if not used with windows software.
 - [LIDAR Sensor](./notebooks/LIDAR_Outdoor_Tests.ipynb): Successful automated data collection with AI camera! Also showcases sample automated data analysis with DBSCAN cluster identification.
 
-## Installation
+## Code
 
-To run the notebooks, install the dependencies:
 
-```bash
-pip install -r requirements.txt
-```
-
-The setup and code used to run the sensors can be found in my [`traffic-data-sensors`](https://github.com/wuihee/traffic-data-sensors) module.
