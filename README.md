@@ -39,7 +39,7 @@ The setup and code used to run the sensors can be found in my [`traffic-data-sen
 The results and analysis of each sensor's baseline capabilities in a static environment.
 
 - [WaveShare's TOF Sensor](./notebooks/TOF_Basic_Tests.ipynb)
-- [Chengdu JRT Laser Distance Sensor](./notebooks/Laser_Basic_Tests.ipynb)
+- [Chengdu JRT BB2X Laser Distance Sensor](./notebooks/Laser_Basic_Tests.ipynb)
 - [Garmin's LIDAR-Lite V4](./notebooks/LIDAR_Basic_Tests.ipynb)
 
 ### Outdoor Tests
@@ -51,5 +51,3 @@ Analysis and conclusions of the vehicle-to-cyclist passing distance data collect
 - [LIDAR Sensor](./notebooks/LIDAR_Outdoor_Tests.ipynb): Successful automated data collection with AI camera! Also showcases sample automated data analysis with DBSCAN cluster identification.
 
 ## Code
-
-
