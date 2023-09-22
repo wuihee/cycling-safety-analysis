@@ -18,19 +18,33 @@ The goal of this project is to collect data on the passing distance of cars to b
 
 ## Installation
 
-First clone the repository by running:
+### Clone Repo
 
 ```bash
-git clone https://github.com/wuihee/Traffic-Data-Collection.git
+git clone https://github.com/wuihee/cycling-safety-analysis.git
 ```
 
-To run the notebooks, install the dependencies:
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-The setup and code used to run the sensors can be found in my [`traffic-data-sensors`](https://github.com/wuihee/traffic-data-sensors) module.
+### Build Package
+
+```bash
+python setup.py bdist_wheel sdist
+```
+
+### Install Package Locally
+
+This will allow you to import `cycling_safety_analysis` and run .py files in [scripts](./scripts/) locally.
+
+```bash
+pip install -e .
+```
+
+The setup and code used to run the sensors can be found in my [`cycling-safety-code`](https://github.com/wuihee/cycling-safety-code) module.
 
 ## Notebooks
 
