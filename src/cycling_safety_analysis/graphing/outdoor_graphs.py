@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 
-from data import analysis, processing
+from ..data import analysis, processing
 
 
 def scatter_time_vs_distance(

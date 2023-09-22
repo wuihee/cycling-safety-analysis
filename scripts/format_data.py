@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from format import laser, tof
+from cycling_safety_analysis.format import jrt_bb2x, raspberry_pi, tof
 
 # Base Directories
 BASE_RAW_DATA = Path("./data/raw")
@@ -16,7 +16,7 @@ tof_in_raw_pairs = [
 ]
 for raw, data in tof_in_raw_pairs:
     if "with_shade" in str(raw):
-        tof.format_text(raw, data)
+        raspberry_pi.format_text(raw, data)
     else:
         tof.format_excel(raw, data)
 
@@ -29,12 +29,12 @@ laser_in_raw_pairs = [
 ]
 for raw, data in laser_in_raw_pairs:
     if "indoors" in str(raw):
-        laser.format_protocol_data(raw, data)
+        jrt_bb2x.format_protocol_data(raw, data)
     else:
-        tof.format_text(raw, data)
+        raspberry_pi.format_text(raw, data)
 
 # Formatting Laser Outdoor Tests
-laser.format_ascii_data(
+jrt_bb2x.format_ascii_data(
     BASE_RAW_DATA / "laser_outdoor_tests", BASE_DATA / "laser_outdoor_tests"
 )
 
@@ -46,4 +46,4 @@ lidar_in_raw_pairs = [
     (LIDAR_BASE_RAW / "outdoors", LIDAR_BASE_DATA / "outdoors"),
 ]
 for raw, data in lidar_in_raw_pairs:
-    tof.format_text(raw, data)
+    raspberry_pi.format_text(raw, data)
