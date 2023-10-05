@@ -47,3 +47,13 @@ lidar_in_raw_pairs = [
 ]
 for raw, data in lidar_in_raw_pairs:
     raspberry_pi.format_text(raw, data)
+
+# Formatting Ultrasonic Basic Tests
+ULTRASONIC_BASE_RAW = BASE_RAW_DATA / "ultrasonic_basic_tests"
+ULTRASONIC_BASE_DATA = BASE_DATA / "ultrasonic_basic_tests"
+ultrasonic_in_raw_pairs = [
+    (ULTRASONIC_BASE_RAW / "indoors", ULTRASONIC_BASE_DATA / "indoors"),
+    (ULTRASONIC_BASE_RAW / "outdoors", ULTRASONIC_BASE_DATA / "outdoors"),
+]
+for raw, data in ultrasonic_in_raw_pairs:
+    raspberry_pi.format_text(raw, data)
