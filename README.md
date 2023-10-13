@@ -1,5 +1,7 @@
 # Traffic Data Collection
 
+Research paper in progress! See incomplete version [here](An%20Automated%20Framework%20for%20Analyzing%20Vehicle%20Passing%20Distances%20to%20Cyclists.pdf).
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
