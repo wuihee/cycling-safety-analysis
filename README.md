@@ -1,6 +1,6 @@
 # Traffic Data Collection
 
-Research paper in progress! See incomplete version [here](An%20Automated%20Framework%20for%20Analyzing%20Vehicle%20Passing%20Distances%20to%20Cyclists.pdf).
+Research paper in progress! See draft [here](An%20Automated%20Framework%20for%20Analyzing%20Vehicle%20Passing%20Distances%20to%20Cyclists.pdf).
 
 ## Table of Contents
 
@@ -57,6 +57,7 @@ The results and analysis of each sensor's baseline capabilities in a static envi
 - [WaveShare's TOF Sensor](./notebooks/TOF_Basic_Tests.ipynb)
 - [Chengdu JRT BB2X Laser Distance Sensor](./notebooks/Laser_Basic_Tests.ipynb)
 - [Garmin's LIDAR-Lite V4](./notebooks/LIDAR_Basic_Tests.ipynb)
+- [DFRobot's A02YYUW Ultrasonic Sensor](./notebooks/Ultrasonic_Basic_Tests.ipynb)
 
 ### Outdoor Tests
 
