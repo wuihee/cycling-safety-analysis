@@ -1,0 +1,19 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Cycling Safety Analysis
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Wuihee
+    family-names: Yap
+    email: wuihee@gmail.com
+repository-code: 'https://github.com/wuihee/cycling-safety-analysis'
+abstract: >-
+  Analysis of vehicle-to-cyclist passing distances in
+  traffic using distance sensors, with traffic safety
+  insights.
+license: MIT
