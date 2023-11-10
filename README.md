@@ -1,6 +1,6 @@
 # Traffic Data Collection
 
-Research paper in progress! See draft [here](An%20Automated%20Framework%20for%20Analyzing%20Vehicle%20Passing%20Distances%20to%20Cyclists.pdf).
+[Research paper](./A%20Low-Cost%20Single%20Board%20Computer-Based%20Automated%20System%20for%20Measuring%20Lateral%20Passing%20Distance%20of%20Vehicles%20Overtaking%20Cyclists.pdf) awaiting publication.
 
 ## Table of Contents
 
