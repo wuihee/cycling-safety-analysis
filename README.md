@@ -1,6 +1,6 @@
 # Traffic Data Collection
 
-[Research paper](./A%20Low-Cost%20Single%20Board%20Computer-Based%20Automated%20System%20for%20Measuring%20Lateral%20Passing%20Distance%20of%20Vehicles%20Overtaking%20Cyclists.pdf) awaiting publication.
+[Manuscript](./manuscript.pdf) awaiting publication.
 
 ## Table of Contents
 
@@ -26,16 +26,16 @@ The goal of this project is to collect data on the passing distance of cars to b
 git clone https://github.com/wuihee/cycling-safety-analysis.git
 ```
 
+### Create Virtual Environment
+
+```bash
+python -m venv .venv
+```
+
 ### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
-```
-
-### Build Package
-
-```bash
-python setup.py bdist_wheel sdist
 ```
 
 ### Install Package Locally
@@ -66,5 +66,3 @@ Analysis and conclusions of the vehicle-to-cyclist passing distance data collect
 - [TOF Sensor](./notebooks/TOF_Outdoor_Tests.ipynb): TOF sensor unreliable due to high amount of spurious data generated.
 - [Laser Sensor](./notebooks/Laser_Outdoor_Tests.ipynb): Laser sensor too slow if not used with windows software.
 - [LIDAR Sensor](./notebooks/LIDAR_Outdoor_Tests.ipynb): Successful automated data collection with AI camera! Also showcases sample automated data analysis with DBSCAN cluster identification.
-
-## Code
