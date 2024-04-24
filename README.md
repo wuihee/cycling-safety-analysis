@@ -1,6 +1,6 @@
 # Traffic Data Collection
 
-See [publication](https://www.mdpi.com/2076-3417/14/9/3602)
+See [publication](https://www.mdpi.com/2076-3417/14/9/3602).
 
 ## Table of Contents
 
