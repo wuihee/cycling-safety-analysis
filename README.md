@@ -1,6 +1,8 @@
 # Traffic Data Collection
 
-See [publication](https://www.mdpi.com/2076-3417/14/9/3602).
+- See [publication](https://www.mdpi.com/2076-3417/14/9/3602).
+- The setup and code used to run the sensors can be found in my [`cycling-safety-code`](https://github.com/wuihee/cycling-safety-code) module.
+- I have also refactored and isolated the code for the sensors on their on in my [`cycling-safety-sensors`](https://github.com/wuihee/cycling-safety-sensors) module.
 
 ## Table of Contents
 
@@ -16,7 +18,7 @@ In Singapore, in the face of bicycle related traffic accidents, traffic rules re
 
 ### Goals
 
-The goal of this project is to collect data on the passing distance of cars to bicycles. I use various sensors to measure the distance of passing vehicles. The sensors were mounted a bike which was used to ride around Singapore roads and collect data. 
+The goal of this project is to collect data on the passing distance of cars to bicycles. I use various sensors to measure the distance of passing vehicles. The sensors were mounted a bike which was used to ride around Singapore roads and collect data.
 
 ## Installation
 
@@ -45,8 +47,6 @@ This will allow you to import `cycling_safety_analysis` and run .py files in [sc
 ```bash
 pip install -e .
 ```
-
-The setup and code used to run the sensors can be found in my [`cycling-safety-code`](https://github.com/wuihee/cycling-safety-code) module.
 
 ## Notebooks
 
