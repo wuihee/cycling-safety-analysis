@@ -1,6 +1,6 @@
 # Traffic Data Collection
 
-[Manuscript](./manuscript.pdf) awaiting publication.
+See [publication](https://www.mdpi.com/2076-3417/14/9/3602)
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ In Singapore, in the face of bicycle related traffic accidents, traffic rules re
 
 ### Goals
 
-The goal of this project is to collect data on the passing distance of cars to bicycles. I use various sensors to measure the distance of passing vehicles. The sensors were mounted a bike which was used to ride around Singapore roads and collect data.
+The goal of this project is to collect data on the passing distance of cars to bicycles. I use various sensors to measure the distance of passing vehicles. The sensors were mounted a bike which was used to ride around Singapore roads and collect data. 
 
 ## Installation
 
